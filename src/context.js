@@ -116,7 +116,6 @@ const taskReducer = (state, action) => {
     case ACTIONS.BULK_EDIT: {
       const { taskIds, updates } = action.payload;
 
-      // ✅ Save full previous state for undo
       const previousTasks = [...state.tasks];
 
       const updatedTasks = state.tasks.map((task) =>
@@ -134,8 +133,8 @@ const taskReducer = (state, action) => {
       return {
         ...state,
         tasks: updatedTasks,
-        history: [...state.history, previousTasks], // ✅ Save previous full state
-        future: [], // ✅ Clear future states when making a new edit
+        history: [...state.history, previousTasks],
+        future: [],
       };
     }
     default:

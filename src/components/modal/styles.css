@@ -1,12 +1,26 @@
 /* ✅ Modal Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
   
   @keyframes fadeOut {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.9); }
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+  
+    to {
+      opacity: 0;
+      transform: scale(0.9);
+    }
   }
   
   /* ✅ Apply fade-in animation when the modal appears */
@@ -21,17 +35,31 @@
   
   /* ✅ Task Row Animations */
   @keyframes fadeInRow {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   @keyframes fadeOutRow {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-5px); }
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  
+    to {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
   }
-
-/* Modal Background */
-.modal-overlay {
+  
+  /* Modal Background */
+  .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -46,31 +74,38 @@
   /* Modal Container */
   .modal {
     background: white;
-    padding: 24px;  /* Increased padding */
+    padding: 24px;
+    /* Increased padding */
     border-radius: 10px;
-    width: 360px; /* Increased width */
+    width: 360px;
+    /* Increased width */
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
     text-align: left;
   }
   
   /* Title */
   .modal h2 {
-    margin-bottom: 16px; /* More space below the title */
+    margin-bottom: 16px;
+    /* More space below the title */
     text-align: center;
   }
   
   /* Form Labels */
   .modal__label {
     display: block;
-    margin: 12px 0 6px; /* Increased spacing */
+    margin: 12px 0 6px;
+    /* Increased spacing */
     font-weight: bold;
   }
   
   /* Form Inputs */
-  .modal__input, .modal__select {
+  .modal__input,
+  .modal__select {
     width: 100%;
-    padding: 10px; /* Increased padding */
-    margin-bottom: 14px; /* More spacing */
+    padding: 10px;
+    /* Increased padding */
+    margin-bottom: 14px;
+    /* More spacing */
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
@@ -80,7 +115,8 @@
   .modal__fieldset {
     border: none;
     padding: 0;
-    margin-bottom: 16px; /* More spacing */
+    margin-bottom: 16px;
+    /* More spacing */
   }
   
   .modal__legend {
@@ -93,7 +129,8 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-bottom: 8px; /* More spacing between options */
+    margin-bottom: 8px;
+    /* More spacing between options */
     cursor: pointer;
   }
   
@@ -101,11 +138,13 @@
   .modal__actions {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px; /* Increased spacing */
+    margin-top: 20px;
+    /* Increased spacing */
   }
   
   .modal__button {
-    padding: 10px 16px; /* More padding for better clickability */
+    padding: 10px 16px;
+    /* More padding for better clickability */
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -131,9 +170,9 @@
   .modal__button--cancel:hover {
     background-color: #aaa;
   }
-
+  
   /* Custom Fields List */
-.modal__list {
+  .modal__list {
     list-style: none;
     padding: 0;
     margin-top: 15px;
@@ -157,8 +196,8 @@
   }
   
   
-/* New Task Button */
-.task-table__add-button {
+  /* New Task Button */
+  .task-table__add-button {
     background-color: #007bff;
     color: white;
     padding: 10px 14px;
@@ -177,7 +216,7 @@
   }
   
   /* Manage Custom Fields Button */
-.task-table__manage-fields {
+  .task-table__manage-fields {
     background: #007bff;
     color: white;
     border: none;
@@ -205,5 +244,6 @@
     width: 16px;
     height: 16px;
     cursor: not-allowed;
-    accent-color: #007bff; /* Match theme */
+    accent-color: #007bff;
+    /* Match theme */
   }

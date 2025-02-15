@@ -252,25 +252,25 @@ const TaskTable = () => {
                     />
                   </th>
                   <th
-                    className="task-table__header table__header--clickable"
+                    className="task-table__header task-table__header--clickable"
                     onClick={() => handleSort("id")}
                   >
                     ID {getSortIcon("id")}
                   </th>
                   <th
-                    className="task-table__header table__header--clickable"
+                    className="task-table__header task-table__header--clickable"
                     onClick={() => handleSort("title")}
                   >
                     Title {getSortIcon("title")}
                   </th>
                   <th
-                    className="task-table__header table__header--clickable"
+                    className="task-table__header task-table__header--clickable"
                     onClick={() => handleSort("status")}
                   >
                     Status {getSortIcon("status")}
                   </th>
                   <th
-                    className="task-table__header table__header--clickable"
+                    className="task-table__header task-table__header--clickable"
                     onClick={() => handleSort("priority")}
                   >
                     Priority {getSortIcon("priority")}
