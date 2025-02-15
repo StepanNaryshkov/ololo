@@ -1,14 +1,7 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
 import AppContext from "../../context";
+import { STATUS_OPTIONS, PRIORITY_OPTIONS } from "../../helpers/constants";
 import "./styles.css";
-
-const priorityOptions = ["high", "medium", "low", "urgent"];
-const statusOptions = [
-  { value: "not_started", label: "Not Started" },
-  { value: "pending", label: "Pending" },
-  { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
-];
 
 const TaskModal = ({ isOpen, onClose, task = null }) => {
   const { dispatch, ACTIONS, customFields } = useContext(AppContext);
@@ -96,7 +89,7 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
           {/* Priority Selection */}
           <fieldset className="modal__fieldset">
             <legend className="modal__legend">Priority:</legend>
-            {priorityOptions.map(option => (
+            {PRIORITY_OPTIONS.map(option => (
               <label key={option} className="modal__radio">
                 <input type="radio" name="priority" value={option} checked={priority === option} onChange={handlePriorityChange} />
                 {option.charAt(0).toUpperCase() + option.slice(1)}
@@ -107,7 +100,7 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
           {/* Status Dropdown */}
           <label htmlFor="status" className="modal__label">Status:</label>
           <select id="status" className="modal__select" value={status} onChange={handleStatusChange}>
-            {statusOptions.map(({ value, label }) => (
+            {STATUS_OPTIONS.map(({ value, label }) => (
               <option key={value} value={value}>{label}</option>
             ))}
           </select>

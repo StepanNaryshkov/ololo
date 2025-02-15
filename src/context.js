@@ -1,9 +1,10 @@
-import React, { createContext, useReducer, useEffect, useCallback } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
 import { fetchData } from "./api/get-all";
 
 // Load from localStorage
 const loadTasks = () => JSON.parse(localStorage.getItem("tasks")) || [];
-const loadCustomFields = () => JSON.parse(localStorage.getItem("customFields")) || [];
+const loadCustomFields = () =>
+  JSON.parse(localStorage.getItem("customFields")) || [];
 
 // Define actions
 const ACTIONS = {
@@ -40,21 +41,21 @@ const taskReducer = (state, action) => {
       return { ...state, tasks: action.payload };
 
     case ACTIONS.ADD_TASK:
-      newState = { 
-        ...state, 
+      newState = {
+        ...state,
         tasks: [action.payload, ...state.tasks],
-        history: [...state.history, state.tasks], 
-        future: []
+        history: [...state.history, state.tasks],
+        future: [],
       };
       saveTasks(newState.tasks);
       break;
 
     case ACTIONS.DELETE_TASK:
-      newState = { 
-        ...state, 
-        tasks: state.tasks.filter(task => task.id !== action.payload),
-        history: [...state.history, state.tasks], 
-        future: []
+      newState = {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== action.payload),
+        history: [...state.history, state.tasks],
+        future: [],
       };
       saveTasks(newState.tasks);
       break;
@@ -62,11 +63,13 @@ const taskReducer = (state, action) => {
     case ACTIONS.EDIT_TASK:
       newState = {
         ...state,
-        tasks: state.tasks.map(task =>
-          task.id === action.payload.id ? { ...task, ...action.payload.data } : task
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload.id
+            ? { ...task, ...action.payload.data }
+            : task,
         ),
-        history: [...state.history, state.tasks], 
-        future: []
+        history: [...state.history, state.tasks],
+        future: [],
       };
       saveTasks(newState.tasks);
       break;
@@ -95,37 +98,46 @@ const taskReducer = (state, action) => {
       saveTasks(newState.tasks);
       break;
 
-      case ACTIONS.SET_CUSTOM_FIELDS:
-        localStorage.setItem("customFields", JSON.stringify(action.payload));
-        return { ...state, customFields: action.payload };
-      case ACTIONS.ADD_CUSTOM_FIELD:
-        const newFields = [...state.customFields, action.payload];
-        localStorage.setItem("customFields", JSON.stringify(newFields));
-        return { ...state, customFields: newFields };
-      case ACTIONS.REMOVE_CUSTOM_FIELD:
-        const filteredFields = state.customFields.filter(field => field.name !== action.payload);
-        return { ...state, customFields: filteredFields };
-        case ACTIONS.BULK_EDIT: {
-          const { taskIds, updates } = action.payload;
+    case ACTIONS.SET_CUSTOM_FIELDS:
+      localStorage.setItem("customFields", JSON.stringify(action.payload));
+      return { ...state, customFields: action.payload };
     
-          // ✅ Save full previous state for undo
-          const previousTasks = [...state.tasks];
+    case ACTIONS.ADD_CUSTOM_FIELD:
+      const newFields = [...state.customFields, action.payload];
+      localStorage.setItem("customFields", JSON.stringify(newFields));
+      return { ...state, customFields: newFields };
     
-          const updatedTasks = state.tasks.map(task =>
-            taskIds.includes(task.id)
-              ? { ...task, ...updates, customFields: { ...task.customFields, ...updates.customFields } }
-              : task
-          );
+    case ACTIONS.REMOVE_CUSTOM_FIELD:
+      const filteredFields = state.customFields.filter(
+        (field) => field.name !== action.payload,
+      );
+      return { ...state, customFields: filteredFields };
     
-          localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    
-          return {
-            ...state,
-            tasks: updatedTasks,
-            history: [...state.history, previousTasks], // ✅ Save previous full state
-            future: [], // ✅ Clear future states when making a new edit
-          };
-        }
+    case ACTIONS.BULK_EDIT: {
+      const { taskIds, updates } = action.payload;
+
+      // ✅ Save full previous state for undo
+      const previousTasks = [...state.tasks];
+
+      const updatedTasks = state.tasks.map((task) =>
+        taskIds.includes(task.id)
+          ? {
+              ...task,
+              ...updates,
+              customFields: { ...task.customFields, ...updates.customFields },
+            }
+          : task,
+      );
+
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+      return {
+        ...state,
+        tasks: updatedTasks,
+        history: [...state.history, previousTasks], // ✅ Save previous full state
+        future: [], // ✅ Clear future states when making a new edit
+      };
+    }
     default:
       return state;
   }

@@ -4,16 +4,10 @@ import Pagination from "../pagination/pagination";
 import TaskModal from "../modal/task-modal";
 import Header from "../header/header";
 import CustomFieldsModal from "../modal/fields-modal";
-import TaskFilters from "../filtering/filtering"; // ✅ Import filter component
+import TaskFilters from "../filtering/filtering";
+import { sortTasks, filterTasks } from "../../helpers/helpers";
+import { SORT_ORDERS, PRIORITY_OPTIONS, STATUSES } from "../../helpers/constants";
 import "./styles.css";
-
-const SORT_ORDERS = {
-  ASC: "asc",
-  DESC: "desc",
-};
-
-const STATUSES = ["not_started", "pending", "in_progress", "completed"];
-const PRIORITIES = ["low", "medium", "high", "urgent"];
 
 const TaskTable = () => {
   const { tasks, customFields, dispatch, ACTIONS } = useContext(AppContext);
@@ -89,33 +83,13 @@ const TaskTable = () => {
     setCurrentPage(1);
   }, []);
 
-  const filteredTasks = tasks.filter((task) => {
-    const matchesTitle = filterTitle
-      ? task.title.toLowerCase().includes(filterTitle.toLowerCase())
-      : true;
+  const filters = { filterTitle, filterPriority, filterStatus };
+  const filteredTasks = filterTasks(tasks, filters);
 
-    const matchesPriority = filterPriority
-      ? task.priority === filterPriority
-      : true;
 
-    const matchesStatus = filterStatus ? task.status === filterStatus : true;
+  const sortedTasks = sortTasks(filteredTasks, sortColumn, sortOrder);
 
-    return matchesTitle && matchesPriority && matchesStatus;
-  });
 
-  /** ✅ Sorting logic */
-  const sortedTasks = sortColumn
-    ? [...filteredTasks].sort((a, b) => {
-        const aValue = a[sortColumn] ?? a.customFields?.[sortColumn] ?? "";
-        const bValue = b[sortColumn] ?? b.customFields?.[sortColumn] ?? "";
-
-        if (aValue < bValue) return sortOrder === SORT_ORDERS.ASC ? -1 : 1;
-        if (aValue > bValue) return sortOrder === SORT_ORDERS.ASC ? 1 : -1;
-        return 0;
-      })
-    : filteredTasks;
-
-  /** ✅ Pagination logic */
   const totalPages = Math.ceil(sortedTasks.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedData = sortedTasks.slice(
@@ -157,7 +131,7 @@ const TaskTable = () => {
     });
   }, []);
 
-  /** ✅ Toggle Select All for only tasks on the current page */
+
   const toggleSelectAll = useCallback(() => {
     setSelectedTasks((prevSelected) => {
       const currentPageTaskIds = new Set(paginatedData.map((task) => task.id));
@@ -178,7 +152,6 @@ const TaskTable = () => {
     });
   }, [paginatedData]);
 
-  /** ✅ Button Click Handlers */
   const handleOpenTaskModal = useCallback(() => {
     setIsModalOpen(true);
   }, []);
@@ -215,7 +188,7 @@ const TaskTable = () => {
   );
 
   const isEmpty = paginatedData.length === 0;
-  console.log("paginatedData", paginatedData);
+
   return (
     <>
       <Header
@@ -224,7 +197,6 @@ const TaskTable = () => {
       />
 
       <div className="task-table">
-        {/* ✅ Bulk Actions UI */}
         {selectedTasks.size > 1 && (
           <div className="task-bulk-actions">
             <span>{selectedTasks.size} selected</span>
@@ -237,7 +209,7 @@ const TaskTable = () => {
 
             <select className="task-bulk-actions__select" value={bulkPriority} onChange={(e) => setBulkPriority(e.target.value)}>
               <option value="">Change Priority</option>
-              {PRIORITIES.map(priority => (
+              {PRIORITY_OPTIONS.map(priority => (
                 <option key={priority} value={priority}>{priority}</option>
               ))}
             </select>
