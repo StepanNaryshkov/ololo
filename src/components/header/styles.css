@@ -1,51 +1,41 @@
-/* Task Table Header */
-.task-table-header {
+.header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #ddd;
+    gap: 10px;
     margin-bottom: 12px;
   }
   
-  /* Manage Custom Fields Button */
-  .task-table-header__manage-fields {
-    background: #007bff;
-    color: white;
+  .header__button {
+    padding: 6px 10px;
     border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
+    border-radius: 4px;
     font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    transition: background 0.2s ease-in-out, transform 0.2s;
+    cursor: pointer;
+    transition: background 0.2s;
   }
   
-  .task-table-header__manage-fields:hover {
-    background: #0056b3;
-    transform: scale(1.05);
-  }
-  
-  /* Add New Task Button */
-  .task-table-header__add-button {
-    background: #28a745;
+  .header__button--undo {
+    background-color: #f39c12;
     color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    transition: background 0.2s ease-in-out, transform 0.2s;
   }
   
-  .task-table-header__add-button:hover {
-    background: #218838;
-    transform: scale(1.05);
+  .header__button--redo {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .header__button--add {
+    background-color: #27ae60;
+    color: white;
+    margin-left: auto;
+  }
+  
+  .header__button--custom {
+    background-color: #8e44ad;
+    color: white;
+  }
+  
+  .header__button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
   

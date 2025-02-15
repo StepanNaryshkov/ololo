@@ -49,6 +49,10 @@
     font-weight: bold;
     text-align: center;
   }
+
+  .table__header--clickable {
+    cursor: pointer;
+  }
   
   
   /* Modifier: Priority */

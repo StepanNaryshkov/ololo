@@ -122,16 +122,16 @@ const TaskTable = () => {
         <table className="task-table__table">
           <thead className="task-table__head">
             <tr className="task-table__row">
-              <th className="task-table__header" onClick={() => handleSort("id")}>
+              <th className="task-table__header table__header--clickable" onClick={() => handleSort("id")}>
                 ID {getSortIcon("id")}
               </th>
-              <th className="task-table__header" onClick={() => handleSort("title")}>
+              <th className="task-table__header table__header--clickable" onClick={() => handleSort("title")}>
                 Title {getSortIcon("title")}
               </th>
-              <th className="task-table__header" onClick={() => handleSort("status")}>
+              <th className="task-table__header table__header--clickable" onClick={() => handleSort("status")}>
                 Status {getSortIcon("status")}
               </th>
-              <th className="task-table__header" onClick={() => handleSort("priority")}>
+              <th className="task-table__header table__header--clickable" onClick={() => handleSort("priority")}>
                 Priority {getSortIcon("priority")}
               </th>
               {customFields.map((field) => (
@@ -147,10 +147,18 @@ const TaskTable = () => {
               <tr key={task.id} className="task-table__row">
                 <td className="task-table__cell">{task.id}</td>
                 <td className="task-table__cell">{task.title}</td>
-                <td className="task-table__cell">{task.status}</td>
-                <td className="task-table__cell">{task.priority}</td>
+                <td className="task-table__cell">
+                  <div className={`task-table__status task-table__status--${task.status.replace(" ", "_").toLowerCase()}`}>
+                    {task.status.replace("_", " ")}
+                  </div>
+                </td>
+                <td className={`task-table__cell task-table__priority task-table__priority--${task.priority.replace(" ", "_").toLowerCase()}`}>
+                  {task.priority}
+                </td>
                 {customFields.map((field) => (
-                  <td key={field.name} className="task-table__cell task-table__cell--custom">
+                  <td key={field.name} className={`task-table__cell task-table__cell--custom ${
+                    field.type === "checkbox" && task.customFields?.[field.name] ? "task-table__cell--checked" : ""
+                  }`}>
                     {field.type === "checkbox" ? (
                       <input type="checkbox" disabled checked={!!task.customFields?.[field.name]} />
                     ) : (

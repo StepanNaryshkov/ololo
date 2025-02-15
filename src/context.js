@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer, useEffect, useCallback } from "react";
 import { fetchData } from "./api/get-all";
 
 // Load from localStorage
@@ -14,77 +14,103 @@ const ACTIONS = {
   SET_CUSTOM_FIELDS: "SET_CUSTOM_FIELDS",
   ADD_CUSTOM_FIELD: "ADD_CUSTOM_FIELD",
   REMOVE_CUSTOM_FIELD: "REMOVE_CUSTOM_FIELD",
+  UNDO: "UNDO",
+  REDO: "REDO",
+};
+
+// Initial state
+const initialState = {
+  tasks: loadTasks(),
+  customFields: loadCustomFields(),
+  history: [],
+  future: [],
+};
+
+// Save tasks to localStorage
+const saveTasks = (tasks) => {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
 // Reducer function
 const taskReducer = (state, action) => {
-  console.log("Reducer Action:", action.type);
-  
+  let newState;
   switch (action.type) {
     case ACTIONS.SET_TASKS:
       return { ...state, tasks: action.payload };
 
     case ACTIONS.ADD_TASK:
-      const newTasks = [action.payload, ...state.tasks];
-      localStorage.setItem("tasks", JSON.stringify(newTasks));
-      return { ...state, tasks: newTasks };
+      newState = { 
+        ...state, 
+        tasks: [action.payload, ...state.tasks],
+        history: [...state.history, state.tasks], 
+        future: []
+      };
+      saveTasks(newState.tasks);
+      break;
 
     case ACTIONS.DELETE_TASK:
-      const filteredTasks = state.tasks.filter(task => task.id !== action.payload);
-      localStorage.setItem("tasks", JSON.stringify(filteredTasks));
-      return { ...state, tasks: filteredTasks };
+      newState = { 
+        ...state, 
+        tasks: state.tasks.filter(task => task.id !== action.payload),
+        history: [...state.history, state.tasks], 
+        future: []
+      };
+      saveTasks(newState.tasks);
+      break;
 
     case ACTIONS.EDIT_TASK:
-      const updatedTasks = state.tasks.map(task =>
-        task.id === action.payload.id ? { ...task, ...action.payload.data } : task
-      );
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      return { ...state, tasks: updatedTasks };
+      newState = {
+        ...state,
+        tasks: state.tasks.map(task =>
+          task.id === action.payload.id ? { ...task, ...action.payload.data } : task
+        ),
+        history: [...state.history, state.tasks], 
+        future: []
+      };
+      saveTasks(newState.tasks);
+      break;
 
-    case ACTIONS.SET_CUSTOM_FIELDS:
-      localStorage.setItem("customFields", JSON.stringify(action.payload));
-      return { ...state, customFields: action.payload };
+    case ACTIONS.UNDO:
+      if (state.history.length === 0) return state;
+      const previousTasks = state.history[state.history.length - 1];
+      newState = {
+        ...state,
+        tasks: previousTasks,
+        history: state.history.slice(0, -1),
+        future: [state.tasks, ...state.future],
+      };
+      saveTasks(newState.tasks);
+      break;
 
-    case ACTIONS.ADD_CUSTOM_FIELD:
-      const newFields = [...state.customFields, action.payload];
-      localStorage.setItem("customFields", JSON.stringify(newFields));
-      return { ...state, customFields: newFields };
-
-    case ACTIONS.REMOVE_CUSTOM_FIELD:
-      const filteredFields = state.customFields.filter(field => field.name !== action.payload);
-      const updatedTasksForField = state.tasks.map(task => {
-        const newTask = { ...task };
-        delete newTask[action.payload]; // Remove field from all tasks
-        return newTask;
-      });
-
-      localStorage.setItem("customFields", JSON.stringify(filteredFields));
-      localStorage.setItem("tasks", JSON.stringify(updatedTasksForField));
-
-      return { ...state, customFields: filteredFields, tasks: updatedTasksForField };
+    case ACTIONS.REDO:
+      if (state.future.length === 0) return state;
+      const nextTasks = state.future[0];
+      newState = {
+        ...state,
+        tasks: nextTasks,
+        history: [...state.history, state.tasks],
+        future: state.future.slice(1),
+      };
+      saveTasks(newState.tasks);
+      break;
 
     default:
       return state;
   }
+  return newState;
 };
 
 // Context provider
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(taskReducer, {
-    tasks: loadTasks(),
-    customFields: loadCustomFields(),
-  });
+  const [state, dispatch] = useReducer(taskReducer, initialState);
 
   useEffect(() => {
     const loadData = async () => {
       const apiTasks = await fetchData();
-      console.log("API Tasks:", apiTasks);
-
       dispatch({ type: ACTIONS.SET_TASKS, payload: apiTasks });
     };
-
     loadData();
   }, []);
 
