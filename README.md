@@ -43,7 +43,7 @@ This project is a **Task Management Application** that provides users with an in
 ## 🚀 **Getting Started**
 ### **1️⃣ Clone the Repository**
 ```sh
- git clone https://github.com/your-repo/task-manager.git
+ git clone https://github.com/StepanNaryshkov/ololo.git
  cd task-manager
 ```
 
@@ -63,22 +63,6 @@ This project is a **Task Management Application** that provides users with an in
 - **LocalStorage API** (Persistence)
 - **CSS (BEM Methodology)** (Styling & Animations)
 
-## 📌 **File Structure**
-```
-/src
- ├── components
- │   ├── TaskTable.js
- │   ├── TaskModal.js
- │   ├── CustomFieldsModal.js
- │   ├── Pagination.js
- │   ├── Filters.js
- ├── context
- │   ├── AppContext.js
- ├── helpers
- │   ├── filterTasks.js
- │   ├── sortTasks.js
- ├── constants.js
- ├── styles
- │   ├── styles.css
-```
-
+## **UI**
+![main view](main-view.png)
+![custom fields modal](manage-custom-fields.png)
