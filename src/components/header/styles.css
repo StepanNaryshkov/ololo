@@ -1,0 +1,51 @@
+/* Task Table Header */
+.task-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  
+  /* Manage Custom Fields Button */
+  .task-table-header__manage-fields {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s ease-in-out, transform 0.2s;
+  }
+  
+  .task-table-header__manage-fields:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Add New Task Button */
+  .task-table-header__add-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s ease-in-out, transform 0.2s;
+  }
+  
+  .task-table-header__add-button:hover {
+    background: #218838;
+    transform: scale(1.05);
+  }
+  

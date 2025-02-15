@@ -1,0 +1,177 @@
+/* Modal Background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Modal Container */
+  .modal {
+    background: white;
+    padding: 24px;  /* Increased padding */
+    border-radius: 10px;
+    width: 360px; /* Increased width */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    text-align: left;
+  }
+  
+  /* Title */
+  .modal h2 {
+    margin-bottom: 16px; /* More space below the title */
+    text-align: center;
+  }
+  
+  /* Form Labels */
+  .modal__label {
+    display: block;
+    margin: 12px 0 6px; /* Increased spacing */
+    font-weight: bold;
+  }
+  
+  /* Form Inputs */
+  .modal__input, .modal__select {
+    width: 100%;
+    padding: 10px; /* Increased padding */
+    margin-bottom: 14px; /* More spacing */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  /* Priority Selection */
+  .modal__fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: 16px; /* More spacing */
+  }
+  
+  .modal__legend {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  /* Priority Radio Buttons */
+  .modal__radio {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px; /* More spacing between options */
+    cursor: pointer;
+  }
+  
+  /* Action Buttons */
+  .modal__actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Increased spacing */
+  }
+  
+  .modal__button {
+    padding: 10px 16px; /* More padding for better clickability */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  /* Save Button */
+  .modal__button--save {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .modal__button--save:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Cancel Button */
+  .modal__button--cancel {
+    background-color: #ccc;
+  }
+  
+  .modal__button--cancel:hover {
+    background-color: #aaa;
+  }
+
+  /* Custom Fields List */
+.modal__list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+  }
+  
+  .modal__list-item {
+    display: flex;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  /* Error Message */
+  .modal__error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  
+  
+/* New Task Button */
+.task-table__add-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: block;
+    width: fit-content;
+    transition: background 0.2s;
+  }
+  
+  .task-table__add-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Manage Custom Fields Button */
+.task-table__manage-fields {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 10px;
+    transition: background 0.2s ease-in-out;
+  }
+  
+  .task-table__manage-fields:hover {
+    background: #0056b3;
+  }
+  
+  /* Custom Fields Table Cells */
+  .task-table__cell--custom {
+    text-align: center;
+    font-style: italic;
+    color: #555;
+  }
+  
+  /* Readonly Checkbox */
+  .task-table__cell--custom input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: not-allowed;
+    accent-color: #007bff; /* Match theme */
+  }

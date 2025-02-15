@@ -1,0 +1,135 @@
+/* Block: Task Table */
+.task-table {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
+  }
+  
+  /* Element: Table */
+  .task-table__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* Element: Table Head */
+  .task-table__head {
+    background-color: #f8f9fa;
+    text-align: left;
+  }
+  
+  /* Element: Table Header */
+  .task-table__header {
+    padding: 12px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  /* Element: Table Row */
+  .task-table__row:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Element: Table Cell */
+  .task-table__cell {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Modifier: Status */
+  .task-table__status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  
+  /* Modifier: Priority */
+  .task-table__priority {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  /* Status Modifiers */
+  .task-table__status--in_progress {
+    background-color: #ffcc00;
+    color: #664d00;
+  }
+
+  /* Status Colors */
+.task-table__status--not_started {
+  background-color: #999;
+  color: white;
+}
+
+  
+  .task-table__status--completed {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .task-table__status--pending {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  /* Priority Modifiers */
+  .task-table__priority--high {
+    color: #dc3545;
+  }
+  
+  .task-table__priority--medium {
+    color: #007bff;
+  }
+  
+  .task-table__priority--low {
+    color: #6c757d;
+  }
+  
+  .task-table__delete-button {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.2s ease-in-out, transform 0.2s;
+  }
+  
+  .task-table__delete-button:hover {
+    background: #cc0000;
+    transform: scale(1.1);
+  }
+
+  .task-table__edit-button {
+    background: #007bff;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin: 0 10px;
+    transition: background 0.2s ease-in-out, transform 0.2s;
+    margin-right: 8px; /* Space between edit & delete buttons */
+  }
+  
+  .task-table__edit-button:hover {
+    background: #0056b3;
+    transform: scale(1.1);
+  }
+  
+
+/* ✅ Add background contrast for checked checkboxes */
+.task-table__cell--checked input[type="checkbox"] {
+  border-radius: 4px;
+  outline: 2px solid blue;
+}

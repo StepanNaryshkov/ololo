@@ -1,0 +1,16 @@
+/* Filters Container */
+.task-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  
+  /* Input & Select Fields */
+  .task-filters__input, 
+  .task-filters__select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
