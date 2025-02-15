@@ -14,7 +14,7 @@ const SORT_ORDERS = {
 
 const TaskTable = () => {
   const { tasks, customFields, dispatch, ACTIONS } = useContext(AppContext);
-  
+  const [selectedTasks, setSelectedTasks] = useState(new Set());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isCustomFieldsModalOpen, setIsCustomFieldsModalOpen] = useState(false);
@@ -27,12 +27,19 @@ const TaskTable = () => {
   const [sortOrder, setSortOrder] = useState(null);
 
   /** ✅ Sorting logic */
-  const handleSort = useCallback((column) => {
-    setSortOrder((prevOrder) =>
-      sortColumn === column ? (prevOrder === SORT_ORDERS.ASC ? SORT_ORDERS.DESC : SORT_ORDERS.ASC) : SORT_ORDERS.ASC
-    );
-    setSortColumn(column);
-  }, [sortColumn]);
+  const handleSort = useCallback(
+    (column) => {
+      setSortOrder((prevOrder) =>
+        sortColumn === column
+          ? prevOrder === SORT_ORDERS.ASC
+            ? SORT_ORDERS.DESC
+            : SORT_ORDERS.ASC
+          : SORT_ORDERS.ASC,
+      );
+      setSortColumn(column);
+    },
+    [sortColumn],
+  );
 
   /** ✅ Filtering handlers */
   const handleFilterTitleChange = useCallback((e) => {
@@ -55,9 +62,23 @@ const TaskTable = () => {
     setCurrentPage(1);
   }, []);
 
+  const filteredTasks = tasks.filter((task) => {
+    const matchesTitle = filterTitle
+      ? task.title.toLowerCase().includes(filterTitle.toLowerCase())
+      : true;
+
+    const matchesPriority = filterPriority
+      ? task.priority === filterPriority
+      : true;
+
+    const matchesStatus = filterStatus ? task.status === filterStatus : true;
+
+    return matchesTitle && matchesPriority && matchesStatus;
+  });
+
   /** ✅ Sorting logic */
   const sortedTasks = sortColumn
-    ? [...tasks].sort((a, b) => {
+    ? [...filteredTasks].sort((a, b) => {
         const aValue = a[sortColumn] ?? a.customFields?.[sortColumn] ?? "";
         const bValue = b[sortColumn] ?? b.customFields?.[sortColumn] ?? "";
 
@@ -65,12 +86,70 @@ const TaskTable = () => {
         if (aValue > bValue) return sortOrder === SORT_ORDERS.ASC ? 1 : -1;
         return 0;
       })
-    : tasks;
+    : filteredTasks;
 
   /** ✅ Pagination logic */
   const totalPages = Math.ceil(sortedTasks.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedData = sortedTasks.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedData = sortedTasks.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
+
+  const handleBulkDelete = useCallback(() => {
+    if (selectedTasks.size === 0) return;
+    const confirmDelete = window.confirm(`Delete ${selectedTasks.size} tasks?`);
+    if (!confirmDelete) return;
+
+    // Remove selected tasks
+    selectedTasks.forEach((taskId) => {
+      dispatch({ type: ACTIONS.DELETE_TASK, payload: taskId });
+    });
+
+    setSelectedTasks(new Set());
+
+    // ✅ Check if the current page becomes empty after deletion
+    const remainingTasks = tasks.length - selectedTasks.size;
+    const newTotalPages = Math.ceil(remainingTasks / itemsPerPage);
+
+    if (newTotalPages > 0 && currentPage > newTotalPages) {
+      setCurrentPage(newTotalPages); // Move to last available page
+    } else if (remainingTasks === 0) {
+      setCurrentPage(1); // Reset to first page if no tasks remain
+    }
+  }, [selectedTasks, tasks, itemsPerPage, currentPage, dispatch, ACTIONS]);
+
+  /** ✅ Handle Checkbox Selection */
+  const toggleTaskSelection = useCallback((taskId) => {
+    setSelectedTasks((prevSelected) => {
+      const updatedSelection = new Set(prevSelected);
+      updatedSelection.has(taskId)
+        ? updatedSelection.delete(taskId)
+        : updatedSelection.add(taskId);
+      return updatedSelection;
+    });
+  }, []);
+
+  /** ✅ Toggle Select All for only tasks on the current page */
+  const toggleSelectAll = useCallback(() => {
+    setSelectedTasks((prevSelected) => {
+      const currentPageTaskIds = new Set(paginatedData.map((task) => task.id));
+
+      // If all tasks on the current page are already selected, deselect them
+      const allSelected = paginatedData.every((task) =>
+        prevSelected.has(task.id),
+      );
+
+      if (allSelected) {
+        const newSelection = new Set(prevSelected);
+        currentPageTaskIds.forEach((id) => newSelection.delete(id));
+        return newSelection;
+      }
+
+      // Otherwise, add only the tasks on the current page to the selection
+      return new Set([...prevSelected, ...currentPageTaskIds]);
+    });
+  }, [paginatedData]);
 
   /** ✅ Button Click Handlers */
   const handleOpenTaskModal = useCallback(() => {
@@ -85,9 +164,12 @@ const TaskTable = () => {
     setIsCustomFieldsModalOpen((prev) => !prev);
   }, []);
 
-  const handleDeleteTask = useCallback((taskId) => {
-    dispatch({ type: ACTIONS.DELETE_TASK, payload: taskId });
-  }, [dispatch, ACTIONS]);
+  const handleDeleteTask = useCallback(
+    (taskId) => {
+      dispatch({ type: ACTIONS.DELETE_TASK, payload: taskId });
+    },
+    [dispatch, ACTIONS],
+  );
 
   const handleEditTask = useCallback((task) => {
     setSelectedTask(task);
@@ -96,9 +178,16 @@ const TaskTable = () => {
 
   /** ✅ Function to display sorting icons */
   const getSortIcon = useCallback(
-    (column) => (sortColumn === column ? (sortOrder === SORT_ORDERS.ASC ? "⬆" : "⬇") : ""),
-    [sortColumn, sortOrder]
+    (column) =>
+      sortColumn === column
+        ? sortOrder === SORT_ORDERS.ASC
+          ? "⬆"
+          : "⬇"
+        : "",
+    [sortColumn, sortOrder],
   );
+
+  const isEmpty = paginatedData.length === 0;
 
   return (
     <>
@@ -108,7 +197,19 @@ const TaskTable = () => {
       />
 
       <div className="task-table">
-        <TaskFilters 
+        {/* ✅ Bulk Actions UI */}
+        {selectedTasks.size > 0 && (
+          <div className="task-bulk-actions">
+            <span>{selectedTasks.size} selected</span>
+            <button
+              className="task-bulk-actions__button task-bulk-actions__button--delete"
+              onClick={handleBulkDelete}
+            >
+              Delete Selected
+            </button>
+          </div>
+        )}
+        <TaskFilters
           filterTitle={filterTitle}
           handleFilterTitleChange={handleFilterTitleChange}
           filterPriority={filterPriority}
@@ -119,70 +220,139 @@ const TaskTable = () => {
           handleItemsPerPageChange={handleItemsPerPageChange}
         />
 
-        <table className="task-table__table">
-          <thead className="task-table__head">
-            <tr className="task-table__row">
-              <th className="task-table__header table__header--clickable" onClick={() => handleSort("id")}>
-                ID {getSortIcon("id")}
-              </th>
-              <th className="task-table__header table__header--clickable" onClick={() => handleSort("title")}>
-                Title {getSortIcon("title")}
-              </th>
-              <th className="task-table__header table__header--clickable" onClick={() => handleSort("status")}>
-                Status {getSortIcon("status")}
-              </th>
-              <th className="task-table__header table__header--clickable" onClick={() => handleSort("priority")}>
-                Priority {getSortIcon("priority")}
-              </th>
-              {customFields.map((field) => (
-                <th key={field.name} className="task-table__header" onClick={() => handleSort(field.name)}>
-                  {field.name} {getSortIcon(field.name)}
-                </th>
-              ))}
-              <th className="task-table__header">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="task-table__body">
-            {paginatedData.map((task) => (
-              <tr key={task.id} className="task-table__row">
-                <td className="task-table__cell">{task.id}</td>
-                <td className="task-table__cell">{task.title}</td>
-                <td className="task-table__cell">
-                  <div className={`task-table__status task-table__status--${task.status.replace(" ", "_").toLowerCase()}`}>
-                    {task.status.replace("_", " ")}
-                  </div>
-                </td>
-                <td className={`task-table__cell task-table__priority task-table__priority--${task.priority.replace(" ", "_").toLowerCase()}`}>
-                  {task.priority}
-                </td>
-                {customFields.map((field) => (
-                  <td key={field.name} className={`task-table__cell task-table__cell--custom ${
-                    field.type === "checkbox" && task.customFields?.[field.name] ? "task-table__cell--checked" : ""
-                  }`}>
-                    {field.type === "checkbox" ? (
-                      <input type="checkbox" disabled checked={!!task.customFields?.[field.name]} />
-                    ) : (
-                      task.customFields?.[field.name] ?? "N/A"
-                    )}
-                  </td>
+        {isEmpty ? (
+          <div className="task-table__empty">
+            <p>No tasks found. Create a new one!</p>
+          </div>
+        ) : (
+          <>
+            <table className="task-table__table">
+              <thead className="task-table__head">
+                <tr className="task-table__row">
+                  <th>
+                    <input
+                      type="checkbox"
+                      onChange={toggleSelectAll}
+                      checked={selectedTasks.size === paginatedData.length}
+                    />
+                  </th>
+                  <th
+                    className="task-table__header table__header--clickable"
+                    onClick={() => handleSort("id")}
+                  >
+                    ID {getSortIcon("id")}
+                  </th>
+                  <th
+                    className="task-table__header table__header--clickable"
+                    onClick={() => handleSort("title")}
+                  >
+                    Title {getSortIcon("title")}
+                  </th>
+                  <th
+                    className="task-table__header table__header--clickable"
+                    onClick={() => handleSort("status")}
+                  >
+                    Status {getSortIcon("status")}
+                  </th>
+                  <th
+                    className="task-table__header table__header--clickable"
+                    onClick={() => handleSort("priority")}
+                  >
+                    Priority {getSortIcon("priority")}
+                  </th>
+                  {customFields.map((field) => (
+                    <th
+                      key={field.name}
+                      className="task-table__header"
+                      onClick={() => handleSort(field.name)}
+                    >
+                      {field.name} {getSortIcon(field.name)}
+                    </th>
+                  ))}
+                  <th className="task-table__header">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="task-table__body">
+                {paginatedData.map((task) => (
+                  <tr key={task.id} className="task-table__row">
+                    <td>
+                      <input
+                        type="checkbox"
+                        className="task-table__checkbox"
+                        onChange={() => toggleTaskSelection(task.id)}
+                        checked={selectedTasks.has(task.id)}
+                      />
+                    </td>
+                    <td className="task-table__cell">{task.id}</td>
+                    <td className="task-table__cell">{task.title}</td>
+                    <td className="task-table__cell">
+                      <div
+                        className={`task-table__status task-table__status--${task.status.replace(" ", "_").toLowerCase()}`}
+                      >
+                        {task.status.replace("_", " ")}
+                      </div>
+                    </td>
+                    <td
+                      className={`task-table__cell task-table__priority task-table__priority--${task.priority.replace(" ", "_").toLowerCase()}`}
+                    >
+                      {task.priority}
+                    </td>
+                    {customFields.map((field) => (
+                      <td
+                        key={field.name}
+                        className={`task-table__cell task-table__cell--custom ${
+                          field.type === "checkbox" &&
+                          task.customFields?.[field.name]
+                            ? "task-table__cell--checked"
+                            : ""
+                        }`}
+                      >
+                        {field.type === "checkbox" ? (
+                          <input
+                            type="checkbox"
+                            disabled
+                            checked={!!task.customFields?.[field.name]}
+                          />
+                        ) : (
+                          (task.customFields?.[field.name] ?? "N/A")
+                        )}
+                      </td>
+                    ))}
+                    <td className="task-table__cell">
+                      <button
+                        className="task-table__delete-button"
+                        onClick={() => handleDeleteTask(task.id)}
+                      >
+                        X
+                      </button>
+                      <button
+                        className="task-table__edit-button"
+                        onClick={() => handleEditTask(task)}
+                      >
+                        ✏️ Edit
+                      </button>
+                    </td>
+                  </tr>
                 ))}
-                <td className="task-table__cell">
-                  <button className="task-table__delete-button" onClick={() => handleDeleteTask(task.id)}>
-                    X
-                  </button>
-                  <button className="task-table__edit-button" onClick={() => handleEditTask(task)}>
-                    ✏️ Edit
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              </tbody>
+            </table>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
+        )}
 
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-
-        <TaskModal isOpen={isModalOpen} onClose={handleCloseTaskModal} task={selectedTask} />
-        <CustomFieldsModal isOpen={isCustomFieldsModalOpen} onClose={handleOpenCustomFieldsModal} />
+        <TaskModal
+          isOpen={isModalOpen}
+          onClose={handleCloseTaskModal}
+          task={selectedTask}
+        />
+        <CustomFieldsModal
+          isOpen={isCustomFieldsModalOpen}
+          onClose={handleOpenCustomFieldsModal}
+        />
       </div>
     </>
   );

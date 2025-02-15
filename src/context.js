@@ -94,6 +94,17 @@ const taskReducer = (state, action) => {
       saveTasks(newState.tasks);
       break;
 
+      case ACTIONS.SET_CUSTOM_FIELDS:
+        localStorage.setItem("customFields", JSON.stringify(action.payload));
+        return { ...state, customFields: action.payload };
+      case ACTIONS.ADD_CUSTOM_FIELD:
+        const newFields = [...state.customFields, action.payload];
+        localStorage.setItem("customFields", JSON.stringify(newFields));
+        return { ...state, customFields: newFields };
+      case ACTIONS.REMOVE_CUSTOM_FIELD:
+        const filteredFields = state.customFields.filter(field => field.name !== action.payload);
+        return { ...state, customFields: filteredFields };
+
     default:
       return state;
   }

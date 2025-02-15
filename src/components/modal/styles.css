@@ -1,3 +1,35 @@
+/* ✅ Modal Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+  }
+  
+  /* ✅ Apply fade-in animation when the modal appears */
+  .modal-overlay {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* ✅ Smooth fade-out effect when closing */
+  .modal-overlay.hidden {
+    animation: fadeOut 0.3s ease-in-out;
+  }
+  
+  /* ✅ Task Row Animations */
+  @keyframes fadeInRow {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeOutRow {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-5px); }
+  }
+
 /* Modal Background */
 .modal-overlay {
     position: fixed;
