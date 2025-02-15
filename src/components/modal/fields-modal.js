@@ -35,7 +35,7 @@ const CustomFieldsModal = ({ isOpen, onClose }) => {
         <h2 className="modal__title">Manage Custom Fields</h2>
         
         <label className="modal__label">Field Name:</label>
-        <input type="text" className="modal__input" placeholder="Field name" value={fieldName} onChange={handleFieldNameChange} />
+        <input autoFocus type="text" className="modal__input" placeholder="Field name" value={fieldName} onChange={handleFieldNameChange} />
 
         <label className="modal__label">Field Type:</label>
         <select className="modal__select" value={fieldType} onChange={handleFieldTypeChange}>

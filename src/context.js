@@ -16,6 +16,7 @@ const ACTIONS = {
   REMOVE_CUSTOM_FIELD: "REMOVE_CUSTOM_FIELD",
   UNDO: "UNDO",
   REDO: "REDO",
+  BULK_EDIT: "BULK_EDIT",
 };
 
 // Initial state
@@ -104,7 +105,27 @@ const taskReducer = (state, action) => {
       case ACTIONS.REMOVE_CUSTOM_FIELD:
         const filteredFields = state.customFields.filter(field => field.name !== action.payload);
         return { ...state, customFields: filteredFields };
-
+        case ACTIONS.BULK_EDIT: {
+          const { taskIds, updates } = action.payload;
+    
+          // ✅ Save full previous state for undo
+          const previousTasks = [...state.tasks];
+    
+          const updatedTasks = state.tasks.map(task =>
+            taskIds.includes(task.id)
+              ? { ...task, ...updates, customFields: { ...task.customFields, ...updates.customFields } }
+              : task
+          );
+    
+          localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    
+          return {
+            ...state,
+            tasks: updatedTasks,
+            history: [...state.history, previousTasks], // ✅ Save previous full state
+            future: [], // ✅ Clear future states when making a new edit
+          };
+        }
     default:
       return state;
   }

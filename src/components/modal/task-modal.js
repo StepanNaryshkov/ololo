@@ -91,7 +91,7 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="title" className="modal__label">Title:</label>
-          <input id="title" className="modal__input" type="text" value={title} onChange={handleTitleChange} required />
+          <input autoFocus id="title" className="modal__input" type="text" value={title} onChange={handleTitleChange} required />
 
           {/* Priority Selection */}
           <fieldset className="modal__fieldset">

@@ -12,6 +12,9 @@ const SORT_ORDERS = {
   DESC: "desc",
 };
 
+const STATUSES = ["not_started", "pending", "in_progress", "completed"];
+const PRIORITIES = ["low", "medium", "high", "urgent"];
+
 const TaskTable = () => {
   const { tasks, customFields, dispatch, ACTIONS } = useContext(AppContext);
   const [selectedTasks, setSelectedTasks] = useState(new Set());
@@ -25,6 +28,30 @@ const TaskTable = () => {
   const [filterStatus, setFilterStatus] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
+  const [bulkStatus, setBulkStatus] = useState("");
+  const [bulkPriority, setBulkPriority] = useState("");
+
+  const handleBulkEdit = useCallback(() => {
+    if (selectedTasks.size === 0) return;
+  
+    dispatch({
+      type: ACTIONS.BULK_EDIT,
+      payload: {
+        taskIds: Array.from(selectedTasks),
+        updates: Object.fromEntries(
+          Object.entries({
+            status: bulkStatus,
+            priority: bulkPriority,
+          }).filter(([_, value]) => value) // ✅ Only include selected values
+        ),
+      },
+    });
+  
+    setSelectedTasks(new Set());
+    setBulkStatus("");
+    setBulkPriority("");
+  }, [selectedTasks, bulkStatus, bulkPriority, dispatch, ACTIONS]);
+  
 
   /** ✅ Sorting logic */
   const handleSort = useCallback(
@@ -188,7 +215,7 @@ const TaskTable = () => {
   );
 
   const isEmpty = paginatedData.length === 0;
-
+  console.log("paginatedData", paginatedData);
   return (
     <>
       <Header
@@ -198,9 +225,24 @@ const TaskTable = () => {
 
       <div className="task-table">
         {/* ✅ Bulk Actions UI */}
-        {selectedTasks.size > 0 && (
+        {selectedTasks.size > 1 && (
           <div className="task-bulk-actions">
             <span>{selectedTasks.size} selected</span>
+            <select className="task-bulk-actions__select" value={bulkStatus} onChange={(e) => setBulkStatus(e.target.value)}>
+              <option value="">Change Status</option>
+              {STATUSES.map(status => (
+                <option key={status} value={status}>{status?.replace("_", " ")}</option>
+              ))}
+            </select>
+
+            <select className="task-bulk-actions__select" value={bulkPriority} onChange={(e) => setBulkPriority(e.target.value)}>
+              <option value="">Change Priority</option>
+              {PRIORITIES.map(priority => (
+                <option key={priority} value={priority}>{priority}</option>
+              ))}
+            </select>
+
+            <button className="task-bulk-actions__button" onClick={handleBulkEdit}>Apply</button>
             <button
               className="task-bulk-actions__button task-bulk-actions__button--delete"
               onClick={handleBulkDelete}
@@ -209,6 +251,7 @@ const TaskTable = () => {
             </button>
           </div>
         )}
+
         <TaskFilters
           filterTitle={filterTitle}
           handleFilterTitleChange={handleFilterTitleChange}
@@ -287,13 +330,13 @@ const TaskTable = () => {
                     <td className="task-table__cell">{task.title}</td>
                     <td className="task-table__cell">
                       <div
-                        className={`task-table__status task-table__status--${task.status.replace(" ", "_").toLowerCase()}`}
+                        className={`task-table__status task-table__status--${task.status?.replace(" ", "_").toLowerCase()}`}
                       >
                         {task.status.replace("_", " ")}
                       </div>
                     </td>
                     <td
-                      className={`task-table__cell task-table__priority task-table__priority--${task.priority.replace(" ", "_").toLowerCase()}`}
+                      className={`task-table__cell task-table__priority task-table__priority--${task.priority?.replace(" ", "_").toLowerCase()}`}
                     >
                       {task.priority}
                     </td>
@@ -319,6 +362,7 @@ const TaskTable = () => {
                       </td>
                     ))}
                     <td className="task-table__cell">
+                      <div className="flex">
                       <button
                         className="task-table__delete-button"
                         onClick={() => handleDeleteTask(task.id)}
@@ -326,11 +370,12 @@ const TaskTable = () => {
                         X
                       </button>
                       <button
-                        className="task-table__edit-button"
+                        className="task-table__edit-button flex"
                         onClick={() => handleEditTask(task)}
                       >
-                        ✏️ Edit
+                        <span>✏️</span> Edit
                       </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
