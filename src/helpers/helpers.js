@@ -1,5 +1,5 @@
 export const sortTasks = (tasks, sortColumn, sortOrder) => {
-    if (!sortColumn) return tasks; // No sorting applied
+    if (!sortColumn) return tasks;
   
     return [...tasks].sort((a, b) => {
       const aValue = a[sortColumn] ?? a.customFields?.[sortColumn] ?? "";

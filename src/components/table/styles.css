@@ -132,14 +132,11 @@
   transform: scale(1.1);
 }
 
-
-/* ✅ Add background contrast for checked checkboxes */
 .task-table__cell--checked input[type="checkbox"] {
   border-radius: 4px;
   outline: 2px solid blue;
 }
 
-/* ✅ Bulk Actions Container */
 .task-bulk-actions {
   display: flex;
   align-items: center;
@@ -150,7 +147,6 @@
   border-radius: 6px;
 }
 
-/* ✅ Bulk Action Buttons */
 .task-bulk-actions__button {
   background-color: #007bff;
   color: white;
@@ -175,19 +171,16 @@
   background-color: #a71d2a;
 }
 
-/* ✅ Highlight Selected Rows */
 .task-table__row.selected {
   background-color: #e3f2fd !important;
 }
 
-/* ✅ Checkbox Styling */
 .task-table__checkbox {
   width: 16px;
   height: 16px;
   cursor: pointer;
 }
 
-/* ✅ Empty State Container */
 .task-table__empty {
   text-align: center;
   padding: 40px;
@@ -198,14 +191,12 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Empty State Message */
 .task-table__empty p {
   font-size: 18px;
   color: #666;
   margin-bottom: 16px;
 }
 
-/* ✅ Bulk Edit Actions */
 .task-bulk-actions {
   display: flex;
   align-items: center;

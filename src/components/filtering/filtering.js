@@ -1,15 +1,6 @@
 import React from "react";
+import { PRIORITY_OPTIONS, STATUS_OPTIONS, ITEMS_PER_PAGE_OPTIONS } from "../../helpers/constants";
 import "./styles.css";
-
-const PRIORITY_OPTIONS = ["high", "medium", "low", "urgent"];
-const STATUS_OPTIONS = [
-  { value: "not_started", label: "Not Started" },
-  { value: "pending", label: "Pending" },
-  { value: "in_progress", label: "In Progress" },
-  { value: "completed", label: "Completed" },
-];
-
-const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50];
 
 const TaskFilters = ({
   filterTitle,

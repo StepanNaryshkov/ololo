@@ -11,3 +11,5 @@ export const SORT_ORDERS = {
     ASC: "asc",
     DESC: "desc",
   };
+
+export const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50];

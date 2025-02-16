@@ -6,7 +6,7 @@ import Header from "../header/header";
 import CustomFieldsModal from "../modal/fields-modal";
 import TaskFilters from "../filtering/filtering";
 import { sortTasks, filterTasks } from "../../helpers/helpers";
-import { SORT_ORDERS, PRIORITY_OPTIONS, STATUSES } from "../../helpers/constants";
+import { SORT_ORDERS, PRIORITY_OPTIONS, STATUSES, ITEMS_PER_PAGE_OPTIONS } from "../../helpers/constants";
 import "./styles.css";
 
 const TaskTable = () => {
@@ -16,7 +16,7 @@ const TaskTable = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [isCustomFieldsModalOpen, setIsCustomFieldsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE_OPTIONS[0]);
   const [filterTitle, setFilterTitle] = useState("");
   const [filterPriority, setFilterPriority] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
@@ -36,7 +36,7 @@ const TaskTable = () => {
           Object.entries({
             status: bulkStatus,
             priority: bulkPriority,
-          }).filter(([_, value]) => value) // ✅ Only include selected values
+          }).filter(([_, value]) => value) // Only include selected values
         ),
       },
     });
@@ -47,7 +47,7 @@ const TaskTable = () => {
   }, [selectedTasks, bulkStatus, bulkPriority, dispatch, ACTIONS]);
   
 
-  /** ✅ Sorting logic */
+  /** Sorting logic */
   const handleSort = useCallback(
     (column) => {
       setSortOrder((prevOrder) =>
@@ -62,7 +62,7 @@ const TaskTable = () => {
     [sortColumn],
   );
 
-  /** ✅ Filtering handlers */
+  /** Filtering handlers */
   const handleFilterTitleChange = useCallback((e) => {
     setFilterTitle(e.target.value);
     setCurrentPage(1);
@@ -109,18 +109,18 @@ const TaskTable = () => {
 
     setSelectedTasks(new Set());
 
-    // ✅ Check if the current page becomes empty after deletion
+    // Check if the current page becomes empty after deletion
     const remainingTasks = tasks.length - selectedTasks.size;
     const newTotalPages = Math.ceil(remainingTasks / itemsPerPage);
 
     if (newTotalPages > 0 && currentPage > newTotalPages) {
-      setCurrentPage(newTotalPages); // Move to last available page
+      setCurrentPage(newTotalPages);
     } else if (remainingTasks === 0) {
-      setCurrentPage(1); // Reset to first page if no tasks remain
+      setCurrentPage(1);
     }
   }, [selectedTasks, tasks, itemsPerPage, currentPage, dispatch, ACTIONS]);
 
-  /** ✅ Handle Checkbox Selection */
+
   const toggleTaskSelection = useCallback((taskId) => {
     setSelectedTasks((prevSelected) => {
       const updatedSelection = new Set(prevSelected);
@@ -176,7 +176,6 @@ const TaskTable = () => {
     setIsModalOpen(true);
   }, []);
 
-  /** ✅ Function to display sorting icons */
   const getSortIcon = useCallback(
     (column) =>
       sortColumn === column

@@ -116,8 +116,8 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
                     <input
                       type="checkbox"
                       className="modal__checkbox"
-                      checked={!!customFieldValues[field.name]} // ✅ Ensures checkbox is editable
-                      onChange={(e) => handleCustomFieldChange(e, field)} // ✅ onChange now correctly updates state
+                      checked={!!customFieldValues[field.name]} // Ensures checkbox is editable
+                      onChange={(e) => handleCustomFieldChange(e, field)} // onChange now correctly updates state
                     />
                   ) : (
                     <input
