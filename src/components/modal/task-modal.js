@@ -11,21 +11,26 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
   const [error, setError] = useState("");
   const [customFieldValues, setCustomFieldValues] = useState({});
 
-  // Populate fields when editing a task
+  // Reset fields when modal is closed
   useEffect(() => {
-    if (task) {
-      setTitle(task.title);
-      setPriority(task.priority);
-      setStatus(task.status);
-      setCustomFieldValues(task.customFields || {});
-    } else {
+    if (!isOpen) {
       setTitle("");
       setPriority("medium");
       setStatus("not_started");
       setCustomFieldValues({});
+      setError("");
     }
-    setError("");
-  }, [task]);
+  }, [isOpen]);
+
+  // Populate fields when editing a task
+  useEffect(() => {
+    if (isOpen && task) {
+      setTitle(task.title);
+      setPriority(task.priority);
+      setStatus(task.status);
+      setCustomFieldValues(task.customFields || {});
+    }
+  }, [isOpen, task]);
 
   // Handlers for standard fields
   const handleTitleChange = useCallback((e) => setTitle(e.target.value), []);

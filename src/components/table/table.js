@@ -9,6 +9,8 @@ import { sortTasks, filterTasks } from "../../helpers/helpers";
 import { SORT_ORDERS, PRIORITY_OPTIONS, STATUSES, ITEMS_PER_PAGE_OPTIONS } from "../../helpers/constants";
 import "./styles.css";
 
+const columns = ["id", "title", "status", "priority"];
+
 const TaskTable = () => {
   const { tasks, customFields, dispatch, ACTIONS } = useContext(AppContext);
   const [selectedTasks, setSelectedTasks] = useState(new Set());
@@ -196,32 +198,15 @@ const TaskTable = () => {
       />
 
       <div className="task-table">
-        {selectedTasks.size > 1 && (
-          <div className="task-bulk-actions">
-            <span>{selectedTasks.size} selected</span>
-            <select className="task-bulk-actions__select" value={bulkStatus} onChange={(e) => setBulkStatus(e.target.value)}>
-              <option value="">Change Status</option>
-              {STATUSES.map(status => (
-                <option key={status} value={status}>{status?.replace("_", " ")}</option>
-              ))}
-            </select>
-
-            <select className="task-bulk-actions__select" value={bulkPriority} onChange={(e) => setBulkPriority(e.target.value)}>
-              <option value="">Change Priority</option>
-              {PRIORITY_OPTIONS.map(priority => (
-                <option key={priority} value={priority}>{priority}</option>
-              ))}
-            </select>
-
-            <button className="task-bulk-actions__button" onClick={handleBulkEdit}>Apply</button>
-            <button
-              className="task-bulk-actions__button task-bulk-actions__button--delete"
-              onClick={handleBulkDelete}
-            >
-              Delete Selected
-            </button>
-          </div>
-        )}
+        <TaskBulkActions
+          selectedTasks={selectedTasks}
+          bulkStatus={bulkStatus}
+          setBulkStatus={setBulkStatus}
+          bulkPriority={bulkPriority}
+          setBulkPriority={setBulkPriority}
+          handleBulkEdit={handleBulkEdit}
+          handleBulkDelete={handleBulkDelete}
+        />
 
         <TaskFilters
           filterTitle={filterTitle}
@@ -240,7 +225,7 @@ const TaskTable = () => {
           </div>
         ) : (
           <>
-            <div className="task-table__wrapper">
+            <main className="task-table__wrapper">
               <table className="task-table__table">
                 <thead className="task-table__head">
                   <tr className="task-table__row">
@@ -251,39 +236,8 @@ const TaskTable = () => {
                         checked={selectedTasks.size === paginatedData.length}
                       />
                     </th>
-                    <th
-                      className="task-table__header task-table__header--clickable"
-                      onClick={() => handleSort("id")}
-                    >
-                      ID {getSortIcon("id")}
-                    </th>
-                    <th
-                      className="task-table__header task-table__header--clickable"
-                      onClick={() => handleSort("title")}
-                    >
-                      Title {getSortIcon("title")}
-                    </th>
-                    <th
-                      className="task-table__header task-table__header--clickable"
-                      onClick={() => handleSort("status")}
-                    >
-                      Status {getSortIcon("status")}
-                    </th>
-                    <th
-                      className="task-table__header task-table__header--clickable"
-                      onClick={() => handleSort("priority")}
-                    >
-                      Priority {getSortIcon("priority")}
-                    </th>
-                    {customFields.map((field) => (
-                      <th
-                        key={field.name}
-                        className="task-table__header"
-                        onClick={() => handleSort(field.name)}
-                      >
-                        {field.name} {getSortIcon(field.name)}
-                      </th>
-                    ))}
+                    {columns.map((col) => <SortableColumnHeader key={col} col={col} handleSort={handleSort} getSortIcon={getSortIcon} />)}
+                    {customFields.map((field) => <CustomFieldHeader key={field.name} field={field} handleSort={handleSort} getSortIcon={getSortIcon} />)}
                     <th className="task-table__header">Actions</th>
                   </tr>
                 </thead>
@@ -312,27 +266,7 @@ const TaskTable = () => {
                       >
                         {task.priority}
                       </td>
-                      {customFields.map((field) => (
-                        <td
-                          key={field.name}
-                          className={`task-table__cell task-table__cell--custom ${
-                            field.type === "checkbox" &&
-                            task.customFields?.[field.name]
-                              ? "task-table__cell--checked"
-                              : ""
-                          }`}
-                        >
-                          {field.type === "checkbox" ? (
-                            <input
-                              type="checkbox"
-                              disabled
-                              checked={!!task.customFields?.[field.name]}
-                            />
-                          ) : (
-                            (task.customFields?.[field.name] ?? "N/A")
-                          )}
-                        </td>
-                      ))}
+                      {customFields.map((field) => <CustomFieldCell key={field.name} field={field} task={task} />)}
                       <td className="task-table__cell">
                         <div className="flex">
                         <button
@@ -353,7 +287,7 @@ const TaskTable = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </main>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -373,6 +307,91 @@ const TaskTable = () => {
         />
       </div>
     </>
+  );
+};
+
+const TaskBulkActions = ({
+  selectedTasks,
+  bulkStatus,
+  setBulkStatus,
+  bulkPriority,
+  setBulkPriority,
+  handleBulkEdit,
+  handleBulkDelete,
+}) => {
+  const onBulkStatusChange = useCallback((e) => setBulkStatus(e.target.value), [setBulkStatus]);
+  const onBulkPriorityChange = useCallback((e) => setBulkPriority(e.target.value), [setBulkPriority]);
+
+  if (selectedTasks.size <= 1) return null; // Hide if less than 2 tasks selected
+
+  return (
+    <div className="task-bulk-actions">
+      <span>{selectedTasks.size} selected</span>
+
+      <select className="task-bulk-actions__select" value={bulkStatus} onChange={onBulkStatusChange}>
+        <option value="">Change Status</option>
+        {STATUSES.map((status) => (
+          <option key={status} value={status}>
+            {status?.replace("_", " ")}
+          </option>
+        ))}
+      </select>
+
+      <select className="task-bulk-actions__select" value={bulkPriority} onChange={onBulkPriorityChange}>
+        <option value="">Change Priority</option>
+        {PRIORITY_OPTIONS.map((priority) => (
+          <option key={priority} value={priority}>
+            {priority}
+          </option>
+        ))}
+      </select>
+
+      <button className="task-bulk-actions__button" onClick={handleBulkEdit}>
+        Apply
+      </button>
+      <button className="task-bulk-actions__button task-bulk-actions__button--delete" onClick={handleBulkDelete}>
+        Delete Selected
+      </button>
+    </div>
+  );
+};
+
+const SortableColumnHeader = ({ col, handleSort, getSortIcon }) => {
+  const onSort = useCallback(() => handleSort(col), [handleSort, col]);
+
+  return (
+    <th className="task-table__header task-table__header--clickable" onClick={onSort}>
+      {col.charAt(0).toUpperCase() + col.slice(1)} {getSortIcon(col)}
+    </th>
+  );
+};
+
+const CustomFieldHeader = ({ field, handleSort, getSortIcon }) => {
+  const onSort = useCallback(() => handleSort(field.name), [handleSort, field.name]);
+
+  return (
+    <th className="task-table__header" onClick={onSort}>
+      {field.name} {getSortIcon(field.name)}
+    </th>
+  );
+};
+
+const CustomFieldCell = ({ field, task }) => {
+  const isChecked =
+    field.type === "checkbox" && task.customFields?.[field.name];
+
+  return (
+    <td
+      className={`task-table__cell task-table__cell--custom ${
+        isChecked ? "task-table__cell--checked" : ""
+      }`}
+    >
+      {field.type === "checkbox" ? (
+        <input type="checkbox" disabled checked={!!isChecked} />
+      ) : (
+        task.customFields?.[field.name] ?? "N/A"
+      )}
+    </td>
   );
 };
 

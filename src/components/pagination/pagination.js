@@ -57,7 +57,7 @@ const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className="pagination">
+    <footer className="pagination">
       <button 
         className="pagination__button" 
         onClick={goToPreviousPage} 
@@ -75,7 +75,7 @@ const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
       >
         Next ▶
       </button>
-    </div>
+    </footer>
   );
 });
 
