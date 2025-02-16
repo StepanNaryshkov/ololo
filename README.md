@@ -63,6 +63,19 @@ This project is a **Task Management Application** that provides users with an in
 - **LocalStorage API** (Persistence)
 - **CSS (BEM Methodology)** (Styling & Animations)
 
+## **Project Limitations & Assumptions**
+- The **Kanban board is not implemented** because it would take over 10 hours to complete. Since the goal was to show the maximum result within 6 hours, I decided not to spend two full working days on it. However, if needed, it can be added later.
+- **Everything is accessible using only the keyboard**.
+- **CSS follows the BEM methodology** for maintainability.
+- **Mobile view was out of scope**, but the application works fully on mobile devices.
+- **Unit tests were added** as an extra feature not listed in the requirements, as I believe they improve code quality.
+- **No UI framework was used**—only custom elements were implemented.
+- **React was chosen** as the UI library because it is the easiest to build with.
+
+## **Live Demo**
+The project demo is available here: [Live Demo](https://ololo-peach.vercel.app/)
+
 ## **UI**
 ![main view](main-view.png)
 ![custom fields modal](manage-custom-fields.png)
+
