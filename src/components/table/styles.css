@@ -5,8 +5,8 @@
   margin: 20px auto;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  background: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow for better contrast */
+  background: #ffffff;
 }
 
 .task-table__wrapper {
@@ -21,7 +21,7 @@
 
 /* Element: Table Head */
 .task-table__head {
-  background-color: #f8f9fa;
+  background-color: #e0e0e0; /* Darker background for better contrast */
   text-align: left;
 }
 
@@ -29,19 +29,19 @@
 .task-table__header {
   padding: 12px;
   font-weight: bold;
-  color: #333;
-  border-bottom: 2px solid #ddd;
+  color: #222; /* Darker text for contrast */
+  border-bottom: 2px solid #aaa;
 }
 
 /* Element: Table Row */
 .task-table__row:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #f0f0f0; /* Improved contrast for alternating rows */
 }
 
 /* Element: Table Cell */
 .task-table__cell {
   padding: 12px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #aaa; /* Darker border */
 }
 
 /* Modifier: Status */
@@ -54,10 +54,15 @@
   text-align: center;
 }
 
+/* Sortable Header */
 .task-table__header--clickable {
   cursor: pointer;
+  color: #0056b3; /* Blue color for clickable headers */
 }
 
+.task-table__header--clickable:hover {
+  color: #003580;
+}
 
 /* Modifier: Priority */
 .task-table__priority {
@@ -67,42 +72,41 @@
 
 /* Status Modifiers */
 .task-table__status--in_progress {
-  background-color: #ffcc00;
-  color: #664d00;
+  background-color: #ffbf00;
+  color: #4a3200;
 }
 
-/* Status Colors */
 .task-table__status--not_started {
-  background-color: #999;
+  background-color: #666;
   color: white;
 }
 
-
 .task-table__status--completed {
-  background-color: #28a745;
-  color: #fff;
+  background-color: #218838;
+  color: #ffffff;
 }
 
 .task-table__status--pending {
-  background-color: #6c757d;
-  color: #fff;
+  background-color: #495057;
+  color: #ffffff;
 }
 
 /* Priority Modifiers */
 .task-table__priority--high {
-  color: #dc3545;
+  color: #c82333;
 }
 
 .task-table__priority--medium {
-  color: #007bff;
+  color: #0056b3;
 }
 
 .task-table__priority--low {
-  color: #6c757d;
+  color: #495057;
 }
 
+/* Buttons */
 .task-table__delete-button {
-  background: #ff4d4d;
+  background: #c82333;
   border: none;
   color: white;
   font-size: 14px;
@@ -113,12 +117,12 @@
 }
 
 .task-table__delete-button:hover {
-  background: #cc0000;
+  background: #9c1f29;
   transform: scale(1.1);
 }
 
 .task-table__edit-button {
-  background: #007bff;
+  background: #0056b3;
   border: none;
   color: white;
   font-size: 14px;
@@ -127,26 +131,25 @@
   border-radius: 4px;
   margin: 0 10px;
   transition: background 0.2s ease-in-out, transform 0.2s;
-  margin-right: 8px;
-  /* Space between edit & delete buttons */
 }
 
 .task-table__edit-button:hover {
-  background: #0056b3;
+  background: #003580;
   transform: scale(1.1);
 }
 
 .task-table__cell--checked input[type="checkbox"] {
   border-radius: 4px;
-  outline: 2px solid blue;
+  outline: 2px solid #0056b3;
 }
 
+/* Bulk Actions */
 .task-bulk-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  background: #f8f9fa;
+  background: #e0e0e0;
   padding: 10px;
   margin-bottom: 12px;
   border-radius: 6px;
@@ -160,7 +163,7 @@
 }
 
 .task-bulk-actions__button {
-  background-color: #007bff;
+  background-color: #0056b3;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -171,50 +174,54 @@
 }
 
 .task-bulk-actions__button:hover {
-  background-color: #0056b3;
+  background-color: #003580;
   transform: scale(1.05);
 }
 
 .task-bulk-actions__button--delete {
-  background-color: #dc3545;
+  background-color: #c82333;
 }
 
 .task-bulk-actions__button--delete:hover {
-  background-color: #a71d2a;
+  background-color: #9c1f29;
 }
 
+/* Table Row Selection */
 .task-table__row.selected {
-  background-color: #e3f2fd !important;
+  background-color: #d4e9fc !important;
 }
 
+/* Checkboxes */
 .task-table__checkbox {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   cursor: pointer;
 }
 
+/* Empty State */
 .task-table__empty {
   text-align: center;
   padding: 40px;
-  background: #f9f9f9;
+  background: #f0f0f0;
   border-radius: 8px;
   margin: 20px auto;
   max-width: 600px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .task-table__empty p {
   font-size: 18px;
-  color: #666;
+  color: #444;
   margin-bottom: 16px;
 }
 
+/* Bulk Actions */
 .task-bulk-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  background: #f8f9fa;
+  background: #e0e0e0;
   border-radius: 6px;
   margin-bottom: 16px;
 }
@@ -223,12 +230,14 @@
   padding: 8px;
   font-size: 14px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #666;
   margin: 0 8px;
+  background: white;
+  color: #222;
 }
 
 .task-bulk-actions__button {
-  background: #007bff;
+  background: #0056b3;
   color: white;
   padding: 8px 12px;
   border: none;
@@ -237,5 +246,5 @@
 }
 
 .task-bulk-actions__button:hover {
-  background: #0056b3;
+  background: #003580;
 }

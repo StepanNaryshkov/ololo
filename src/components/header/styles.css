@@ -1,50 +1,77 @@
 .header {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 12px;
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-  }
-  
-  .header__button {
-    padding: 6px 10px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .header__button--undo {
-    background-color: #f39c12;
-    color: white;
-  }
-  
-  .header__button--redo {
-    background-color: #3498db;
-    color: white;
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Button Styles */
+.header__button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s ease-in-out;
+  color: white;
+  text-align: center;
+}
+
+/* Undo Button */
+.header__button--undo {
+  background-color: #d68910; /* Darker shade for contrast */
+}
+
+.header__button--undo:hover {
+  background-color: #b9770e;
+  transform: scale(1.05);
+}
+
+/* Redo Button */
+.header__button--redo {
+  background-color: #2a80b9; /* Darker blue */
+}
+
+.header__button--redo:hover {
+  background-color: #1f6698;
+  transform: scale(1.05);
+}
+
+/* Add Button */
+.header__button--add {
+  background-color: #1e8449; /* Improved contrast green */
+  margin-left: auto;
+}
+
+.header__button--add:hover {
+  background-color: #186a3b;
+  transform: scale(1.05);
+}
+
+/* Custom Fields Button */
+.header__button--custom {
+  background-color: #6c3483; /* Darker purple for contrast */
+}
+
+.header__button--custom:hover {
+  background-color: #512e5f;
+  transform: scale(1.05);
+}
+
+/* Disabled Button */
+.header__button:disabled {
+  background-color: #a0a0a0; /* Slightly darker gray for visibility */
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* Responsive Fix for Mobile */
+@media screen and (max-width: 600px) {
   .header__button--add {
-    background-color: #27ae60;
-    color: white;
-    margin-left: auto;
+    margin: 0;
   }
-  
-  .header__button--custom {
-    background-color: #8e44ad;
-    color: white;
-  }
-  
-  .header__button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  @media screen and (max-width: 600px) {
-    .header__button--add {
-      margin: 0;
-    }
-  }
+}
