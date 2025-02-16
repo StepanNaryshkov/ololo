@@ -240,118 +240,120 @@ const TaskTable = () => {
           </div>
         ) : (
           <>
-            <table className="task-table__table">
-              <thead className="task-table__head">
-                <tr className="task-table__row">
-                  <th className="task-table__header">
-                    <input
-                      type="checkbox"
-                      onChange={toggleSelectAll}
-                      checked={selectedTasks.size === paginatedData.length}
-                    />
-                  </th>
-                  <th
-                    className="task-table__header task-table__header--clickable"
-                    onClick={() => handleSort("id")}
-                  >
-                    ID {getSortIcon("id")}
-                  </th>
-                  <th
-                    className="task-table__header task-table__header--clickable"
-                    onClick={() => handleSort("title")}
-                  >
-                    Title {getSortIcon("title")}
-                  </th>
-                  <th
-                    className="task-table__header task-table__header--clickable"
-                    onClick={() => handleSort("status")}
-                  >
-                    Status {getSortIcon("status")}
-                  </th>
-                  <th
-                    className="task-table__header task-table__header--clickable"
-                    onClick={() => handleSort("priority")}
-                  >
-                    Priority {getSortIcon("priority")}
-                  </th>
-                  {customFields.map((field) => (
-                    <th
-                      key={field.name}
-                      className="task-table__header"
-                      onClick={() => handleSort(field.name)}
-                    >
-                      {field.name} {getSortIcon(field.name)}
-                    </th>
-                  ))}
-                  <th className="task-table__header">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="task-table__body">
-                {paginatedData.map((task) => (
-                  <tr key={task.id} className="task-table__row">
-                    <td className="task-table__cell">
+            <div className="task-table__wrapper">
+              <table className="task-table__table">
+                <thead className="task-table__head">
+                  <tr className="task-table__row">
+                    <th className="task-table__header">
                       <input
                         type="checkbox"
-                        className="task-table__checkbox"
-                        onChange={() => toggleTaskSelection(task.id)}
-                        checked={selectedTasks.has(task.id)}
+                        onChange={toggleSelectAll}
+                        checked={selectedTasks.size === paginatedData.length}
                       />
-                    </td>
-                    <td className="task-table__cell">{task.id}</td>
-                    <td className="task-table__cell">{task.title}</td>
-                    <td className="task-table__cell">
-                      <div
-                        className={`task-table__status task-table__status--${task.status?.replace(" ", "_").toLowerCase()}`}
-                      >
-                        {task.status.replace("_", " ")}
-                      </div>
-                    </td>
-                    <td
-                      className={`task-table__cell task-table__priority task-table__priority--${task.priority?.replace(" ", "_").toLowerCase()}`}
+                    </th>
+                    <th
+                      className="task-table__header task-table__header--clickable"
+                      onClick={() => handleSort("id")}
                     >
-                      {task.priority}
-                    </td>
+                      ID {getSortIcon("id")}
+                    </th>
+                    <th
+                      className="task-table__header task-table__header--clickable"
+                      onClick={() => handleSort("title")}
+                    >
+                      Title {getSortIcon("title")}
+                    </th>
+                    <th
+                      className="task-table__header task-table__header--clickable"
+                      onClick={() => handleSort("status")}
+                    >
+                      Status {getSortIcon("status")}
+                    </th>
+                    <th
+                      className="task-table__header task-table__header--clickable"
+                      onClick={() => handleSort("priority")}
+                    >
+                      Priority {getSortIcon("priority")}
+                    </th>
                     {customFields.map((field) => (
-                      <td
+                      <th
                         key={field.name}
-                        className={`task-table__cell task-table__cell--custom ${
-                          field.type === "checkbox" &&
-                          task.customFields?.[field.name]
-                            ? "task-table__cell--checked"
-                            : ""
-                        }`}
+                        className="task-table__header"
+                        onClick={() => handleSort(field.name)}
                       >
-                        {field.type === "checkbox" ? (
-                          <input
-                            type="checkbox"
-                            disabled
-                            checked={!!task.customFields?.[field.name]}
-                          />
-                        ) : (
-                          (task.customFields?.[field.name] ?? "N/A")
-                        )}
-                      </td>
+                        {field.name} {getSortIcon(field.name)}
+                      </th>
                     ))}
-                    <td className="task-table__cell">
-                      <div className="flex">
-                      <button
-                        className="task-table__delete-button"
-                        onClick={() => handleDeleteTask(task.id)}
-                      >
-                        X
-                      </button>
-                      <button
-                        className="task-table__edit-button flex"
-                        onClick={() => handleEditTask(task)}
-                      >
-                        <span>✏️</span> Edit
-                      </button>
-                      </div>
-                    </td>
+                    <th className="task-table__header">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="task-table__body">
+                  {paginatedData.map((task) => (
+                    <tr key={task.id} className="task-table__row">
+                      <td className="task-table__cell">
+                        <input
+                          type="checkbox"
+                          className="task-table__checkbox"
+                          onChange={() => toggleTaskSelection(task.id)}
+                          checked={selectedTasks.has(task.id)}
+                        />
+                      </td>
+                      <td className="task-table__cell">{task.id}</td>
+                      <td className="task-table__cell">{task.title}</td>
+                      <td className="task-table__cell">
+                        <div
+                          className={`task-table__status task-table__status--${task.status?.replace(" ", "_").toLowerCase()}`}
+                        >
+                          {task.status.replace("_", " ")}
+                        </div>
+                      </td>
+                      <td
+                        className={`task-table__cell task-table__priority task-table__priority--${task.priority?.replace(" ", "_").toLowerCase()}`}
+                      >
+                        {task.priority}
+                      </td>
+                      {customFields.map((field) => (
+                        <td
+                          key={field.name}
+                          className={`task-table__cell task-table__cell--custom ${
+                            field.type === "checkbox" &&
+                            task.customFields?.[field.name]
+                              ? "task-table__cell--checked"
+                              : ""
+                          }`}
+                        >
+                          {field.type === "checkbox" ? (
+                            <input
+                              type="checkbox"
+                              disabled
+                              checked={!!task.customFields?.[field.name]}
+                            />
+                          ) : (
+                            (task.customFields?.[field.name] ?? "N/A")
+                          )}
+                        </td>
+                      ))}
+                      <td className="task-table__cell">
+                        <div className="flex">
+                        <button
+                          className="task-table__delete-button"
+                          onClick={() => handleDeleteTask(task.id)}
+                        >
+                          X
+                        </button>
+                        <button
+                          className="task-table__edit-button flex"
+                          onClick={() => handleEditTask(task)}
+                        >
+                          <span>✏️</span> Edit
+                        </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

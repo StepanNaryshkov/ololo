@@ -1,5 +1,6 @@
 .header {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 12px;
     max-width: 1200px;
@@ -42,3 +43,8 @@
     cursor: not-allowed;
   }
   
+  @media screen and (max-width: 600px) {
+    .header__button--add {
+      margin: 0;
+    }
+  }

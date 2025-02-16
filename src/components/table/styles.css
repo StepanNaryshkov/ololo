@@ -9,6 +9,10 @@
   background: #fff;
 }
 
+.task-table__wrapper {
+  overflow-x: auto;
+}
+
 /* Element: Table */
 .task-table__table {
   width: 100%;
