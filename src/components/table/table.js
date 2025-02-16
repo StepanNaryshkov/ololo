@@ -3,13 +3,15 @@ import AppContext from "../../context";
 import Pagination from "../pagination/pagination";
 import TaskModal from "../modal/task-modal";
 import Header from "../header/header";
+import TaskBulkActions from "./task-bulk-actions";
+import CustomFieldCell from "./custom-field-cell";
+import CustomFieldHeader from "./custom-field-header";
 import CustomFieldsModal from "../modal/fields-modal";
+import SortableColumnHeader from "./sortable-column-header";
 import TaskFilters from "../filtering/filtering";
 import { sortTasks, filterTasks } from "../../helpers/helpers";
 import {
   SORT_ORDERS,
-  PRIORITY_OPTIONS,
-  STATUSES,
   ITEMS_PER_PAGE_OPTIONS,
 } from "../../helpers/constants";
 import "./styles.css";
@@ -198,26 +200,28 @@ const TaskTable = () => {
       />
 
       <div className="task-table">
-        <TaskBulkActions
-          selectedTasks={selectedTasks}
-          bulkStatus={bulkStatus}
-          setBulkStatus={setBulkStatus}
-          bulkPriority={bulkPriority}
-          setBulkPriority={setBulkPriority}
-          handleBulkEdit={handleBulkEdit}
-          handleBulkDelete={handleBulkDelete}
-        />
-
-        <TaskFilters
-          filterTitle={filterTitle}
-          handleFilterTitleChange={handleFilterTitleChange}
-          filterPriority={filterPriority}
-          handleFilterPriorityChange={handleFilterPriorityChange}
-          filterStatus={filterStatus}
-          handleFilterStatusChange={handleFilterStatusChange}
-          itemsPerPage={itemsPerPage}
-          handleItemsPerPageChange={handleItemsPerPageChange}
-        />
+        {!isEmpty && <>
+            <TaskBulkActions
+              selectedTasks={selectedTasks}
+              bulkStatus={bulkStatus}
+              setBulkStatus={setBulkStatus}
+              bulkPriority={bulkPriority}
+              setBulkPriority={setBulkPriority}
+              handleBulkEdit={handleBulkEdit}
+              handleBulkDelete={handleBulkDelete}
+            />
+            <TaskFilters
+              filterTitle={filterTitle}
+              handleFilterTitleChange={handleFilterTitleChange}
+              filterPriority={filterPriority}
+              handleFilterPriorityChange={handleFilterPriorityChange}
+              filterStatus={filterStatus}
+              handleFilterStatusChange={handleFilterStatusChange}
+              itemsPerPage={itemsPerPage}
+              handleItemsPerPageChange={handleItemsPerPageChange}
+            />
+          </>
+        }
 
         {isEmpty ? (
           <div className="task-table__empty">
@@ -327,114 +331,6 @@ const TaskTable = () => {
         />
       </div>
     </>
-  );
-};
-
-const TaskBulkActions = ({
-  selectedTasks,
-  bulkStatus,
-  setBulkStatus,
-  bulkPriority,
-  setBulkPriority,
-  handleBulkEdit,
-  handleBulkDelete,
-}) => {
-  const onBulkStatusChange = useCallback(
-    (e) => setBulkStatus(e.target.value),
-    [setBulkStatus],
-  );
-  const onBulkPriorityChange = useCallback(
-    (e) => setBulkPriority(e.target.value),
-    [setBulkPriority],
-  );
-
-  if (selectedTasks.size <= 1) return null; // Hide if less than 2 tasks selected
-
-  return (
-    <div className="task-bulk-actions">
-      <span>{selectedTasks.size} selected</span>
-
-      <select
-        className="task-bulk-actions__select"
-        value={bulkStatus}
-        onChange={onBulkStatusChange}
-      >
-        <option value="">Change Status</option>
-        {STATUSES.map((status) => (
-          <option key={status} value={status}>
-            {status?.replace("_", " ")}
-          </option>
-        ))}
-      </select>
-
-      <select
-        className="task-bulk-actions__select"
-        value={bulkPriority}
-        onChange={onBulkPriorityChange}
-      >
-        <option value="">Change Priority</option>
-        {PRIORITY_OPTIONS.map((priority) => (
-          <option key={priority} value={priority}>
-            {priority}
-          </option>
-        ))}
-      </select>
-
-      <button className="task-bulk-actions__button" onClick={handleBulkEdit}>
-        Apply
-      </button>
-      <button
-        className="task-bulk-actions__button task-bulk-actions__button--delete"
-        onClick={handleBulkDelete}
-      >
-        Delete Selected
-      </button>
-    </div>
-  );
-};
-
-const SortableColumnHeader = ({ col, handleSort, getSortIcon }) => {
-  const onSort = useCallback(() => handleSort(col), [handleSort, col]);
-
-  return (
-    <th
-      className="task-table__header task-table__header--clickable"
-      onClick={onSort}
-    >
-      {col.charAt(0).toUpperCase() + col.slice(1)} {getSortIcon(col)}
-    </th>
-  );
-};
-
-const CustomFieldHeader = ({ field, handleSort, getSortIcon }) => {
-  const onSort = useCallback(
-    () => handleSort(field.name),
-    [handleSort, field.name],
-  );
-
-  return (
-    <th className="task-table__header" onClick={onSort}>
-      {field.name} {getSortIcon(field.name)}
-    </th>
-  );
-};
-
-const CustomFieldCell = ({ field, task }) => {
-  const isChecked =
-    field.type === "checkbox" && task.customFields?.[field.name];
-
-  return (
-    <td
-      className={`task-table__cell task-table__cell--custom ${
-        isChecked ? "task-table__cell--checked" : ""
-      }`}
-    >
-      {field.type === "checkbox" ? (
-        <input type="checkbox" disabled checked={!!isChecked} />
-      ) : (
-        (task.customFields?.[field.name] ?? "N/A")
-      )}
-    </td>
   );
 };
 

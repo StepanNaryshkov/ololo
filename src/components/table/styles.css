@@ -143,12 +143,20 @@
 
 .task-bulk-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   background: #f8f9fa;
   padding: 10px;
   margin-bottom: 12px;
   border-radius: 6px;
+}
+
+@media screen and (max-width: 768px) {
+  .task-bulk-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 .task-bulk-actions__button {
