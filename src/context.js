@@ -7,7 +7,7 @@ const loadCustomFields = () =>
   JSON.parse(localStorage.getItem("customFields")) || [];
 
 // Define actions
-const ACTIONS = {
+export const ACTIONS = {
   SET_TASKS: "SET_TASKS",
   ADD_TASK: "ADD_TASK",
   DELETE_TASK: "DELETE_TASK",
@@ -34,7 +34,7 @@ const saveTasks = (tasks) => {
 };
 
 // Reducer function
-const taskReducer = (state, action) => {
+export const taskReducer = (state, action) => {
   let newState;
   switch (action.type) {
     case ACTIONS.SET_TASKS:
