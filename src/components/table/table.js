@@ -10,10 +10,7 @@ import CustomFieldsModal from "../modal/fields-modal";
 import SortableColumnHeader from "./sortable-column-header";
 import TaskFilters from "../filtering/filtering";
 import { sortTasks, filterTasks } from "../../helpers/helpers";
-import {
-  SORT_ORDERS,
-  ITEMS_PER_PAGE_OPTIONS,
-} from "../../helpers/constants";
+import { SORT_ORDERS, ITEMS_PER_PAGE_OPTIONS } from "../../helpers/constants";
 import "./styles.css";
 
 const columns = ["id", "title", "status", "priority"];
@@ -200,28 +197,27 @@ const TaskTable = () => {
       />
 
       <div className="task-table">
-        {!isEmpty && <>
-            <TaskBulkActions
-              selectedTasks={selectedTasks}
-              bulkStatus={bulkStatus}
-              setBulkStatus={setBulkStatus}
-              bulkPriority={bulkPriority}
-              setBulkPriority={setBulkPriority}
-              handleBulkEdit={handleBulkEdit}
-              handleBulkDelete={handleBulkDelete}
-            />
-            <TaskFilters
-              filterTitle={filterTitle}
-              handleFilterTitleChange={handleFilterTitleChange}
-              filterPriority={filterPriority}
-              handleFilterPriorityChange={handleFilterPriorityChange}
-              filterStatus={filterStatus}
-              handleFilterStatusChange={handleFilterStatusChange}
-              itemsPerPage={itemsPerPage}
-              handleItemsPerPageChange={handleItemsPerPageChange}
-            />
-          </>
-        }
+        {!isEmpty && (
+          <TaskBulkActions
+            selectedTasks={selectedTasks}
+            bulkStatus={bulkStatus}
+            setBulkStatus={setBulkStatus}
+            bulkPriority={bulkPriority}
+            setBulkPriority={setBulkPriority}
+            handleBulkEdit={handleBulkEdit}
+            handleBulkDelete={handleBulkDelete}
+          />
+        )}
+        <TaskFilters
+          filterTitle={filterTitle}
+          handleFilterTitleChange={handleFilterTitleChange}
+          filterPriority={filterPriority}
+          handleFilterPriorityChange={handleFilterPriorityChange}
+          filterStatus={filterStatus}
+          handleFilterStatusChange={handleFilterStatusChange}
+          itemsPerPage={itemsPerPage}
+          handleItemsPerPageChange={handleItemsPerPageChange}
+        />
 
         {isEmpty ? (
           <div className="task-table__empty">
@@ -241,7 +237,10 @@ const TaskTable = () => {
                         checked={selectedTasks.size === paginatedData.length}
                         aria-label="Select all tasks"
                       />
-                      <label htmlFor="select-all-tasks" className="visually-hidden">
+                      <label
+                        htmlFor="select-all-tasks"
+                        className="visually-hidden"
+                      >
                         Select all tasks
                       </label>
                     </th>
@@ -275,9 +274,12 @@ const TaskTable = () => {
                           checked={selectedTasks.has(task.id)}
                           aria-label={`Select task ${task.id}`}
                         />
-                          <label htmlFor={`task-checkbox-${task.id}`} className="visually-hidden">
-                            Select task {task.id}
-                          </label>
+                        <label
+                          htmlFor={`task-checkbox-${task.id}`}
+                          className="visually-hidden"
+                        >
+                          Select task {task.id}
+                        </label>
                       </td>
                       <td className="task-table__cell">{task.id}</td>
                       <td className="task-table__cell">{task.title}</td>
