@@ -81,4 +81,5 @@ const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
   );
 });
 
+Pagination.displayName = "Pagination";
 export default Pagination;

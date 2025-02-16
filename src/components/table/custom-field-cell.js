@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 const CustomFieldCell = ({ field, task }) => {
   const isChecked =
@@ -33,4 +33,5 @@ const CustomFieldCell = ({ field, task }) => {
   );
 };
 
-export default CustomFieldCell;
+CustomFieldCell.displayName = "CustomFieldCell";
+export default memo(CustomFieldCell);

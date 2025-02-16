@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 
 const CustomFieldHeader = ({ field, handleSort, getSortIcon }) => {
   const onSort = useCallback(
@@ -13,4 +13,5 @@ const CustomFieldHeader = ({ field, handleSort, getSortIcon }) => {
   );
 };
 
-export default CustomFieldHeader;
+CustomFieldHeader.displayName = 'CustomFieldHeader';
+export default memo(CustomFieldHeader);

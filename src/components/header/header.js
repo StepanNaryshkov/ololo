@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useEffect } from "react";
+import React, { useContext, useCallback, useEffect, memo } from "react";
 import AppContext from "../../context";
 import "./styles.css";
 
@@ -61,5 +61,6 @@ const Header = ({ onOpenTaskModal, onOpenCustomFieldsModal }) => {
     </header>
   );
 };
+Header.displayName = "Header";
 
-export default Header;
+export default memo(Header);
