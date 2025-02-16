@@ -19,10 +19,13 @@ export const sortTasks = (tasks, sortColumn, sortOrder) => {
         ? task.title.toLowerCase().includes(filterTitle.toLowerCase())
         : true;
   
-      const matchesPriority = filterPriority ? task.priority === filterPriority : true;
+      const matchesPriority = filterPriority
+        ? task.priority === filterPriority
+        : true;
   
       const matchesStatus = filterStatus ? task.status === filterStatus : true;
   
       return matchesTitle && matchesPriority && matchesStatus;
     });
   };
+  

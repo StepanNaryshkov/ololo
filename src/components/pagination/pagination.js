@@ -18,7 +18,7 @@ const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
     (page) => {
       onPageChange(page);
     },
-    [onPageChange]
+    [onPageChange],
   );
 
   // Define range visibility logic
@@ -43,7 +43,9 @@ const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
 
     return pageNumbers.map((page, index) =>
       page === "..." ? (
-        <span key={`ellipsis-${index}`} className="pagination__ellipsis">...</span>
+        <span key={`ellipsis-${index}`} className="pagination__ellipsis">
+          ...
+        </span>
       ) : (
         <button
           key={`page-${page}`}
@@ -52,15 +54,15 @@ const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
         >
           {page}
         </button>
-      )
+      ),
     );
   };
 
   return (
     <footer className="pagination">
-      <button 
-        className="pagination__button" 
-        onClick={goToPreviousPage} 
+      <button
+        className="pagination__button"
+        onClick={goToPreviousPage}
         disabled={currentPage === 1}
       >
         ◀ Prev
@@ -68,9 +70,9 @@ const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
 
       {renderPageNumbers()}
 
-      <button 
-        className="pagination__button" 
-        onClick={goToNextPage} 
+      <button
+        className="pagination__button"
+        onClick={goToNextPage}
         disabled={currentPage === totalPages}
       >
         Next ▶

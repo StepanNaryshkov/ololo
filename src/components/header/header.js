@@ -32,16 +32,30 @@ const Header = ({ onOpenTaskModal, onOpenCustomFieldsModal }) => {
 
   return (
     <header className="header">
-      <button className="header__button header__button--undo" onClick={handleUndo} disabled={history.length === 0}>
+      <button
+        className="header__button header__button--undo"
+        onClick={handleUndo}
+        disabled={history.length === 0}
+      >
         ⬅ Undo
       </button>
-      <button className="header__button header__button--redo" onClick={handleRedo} disabled={future.length === 0}>
+      <button
+        className="header__button header__button--redo"
+        onClick={handleRedo}
+        disabled={future.length === 0}
+      >
         ➡ Redo
       </button>
-      <button className="header__button header__button--custom" onClick={onOpenCustomFieldsModal}>
+      <button
+        className="header__button header__button--custom"
+        onClick={onOpenCustomFieldsModal}
+      >
         ⚙️ Manage Custom Fields
       </button>
-      <button className="header__button header__button--add" onClick={onOpenTaskModal}>
+      <button
+        className="header__button header__button--add"
+        onClick={onOpenTaskModal}
+      >
         + New Task
       </button>
     </header>

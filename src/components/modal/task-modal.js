@@ -34,14 +34,18 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
 
   // Handlers for standard fields
   const handleTitleChange = useCallback((e) => setTitle(e.target.value), []);
-  const handlePriorityChange = useCallback((e) => setPriority(e.target.value), []);
+  const handlePriorityChange = useCallback(
+    (e) => setPriority(e.target.value),
+    [],
+  );
   const handleStatusChange = useCallback((e) => setStatus(e.target.value), []);
 
   // Handler for custom fields
   const handleCustomFieldChange = useCallback((e, field) => {
     setCustomFieldValues((prevValues) => ({
       ...prevValues,
-      [field.name]: field.type === "checkbox" ? e.target.checked : e.target.value,
+      [field.name]:
+        field.type === "checkbox" ? e.target.checked : e.target.value,
     }));
   }, []);
 
@@ -57,10 +61,10 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
       if (task) {
         dispatch({
           type: ACTIONS.EDIT_TASK,
-          payload: { 
-            id: task.id, 
-            data: { title, priority, status, customFields: customFieldValues }
-          }
+          payload: {
+            id: task.id,
+            data: { title, priority, status, customFields: customFieldValues },
+          },
         });
       } else {
         const newTask = {
@@ -75,38 +79,81 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
 
       onClose();
     },
-    [title, priority, status, customFieldValues, task, dispatch, ACTIONS, onClose]
+    [
+      title,
+      priority,
+      status,
+      customFieldValues,
+      task,
+      dispatch,
+      ACTIONS,
+      onClose,
+    ],
   );
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+    <div
+      className="modal-overlay"
+      role="dialog"
+      aria-labelledby="modal-title"
+      aria-modal="true"
+    >
       <div className="modal">
         <h2 id="modal-title">{task ? "Edit Task" : "Add New Task"}</h2>
 
-        {error && <p className="modal__error" role="alert">{error}</p>}
+        {error && (
+          <p className="modal__error" role="alert">
+            {error}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <label htmlFor="title" className="modal__label">Title:</label>
-          <input autoFocus id="title" className="modal__input" type="text" value={title} onChange={handleTitleChange} required />
+          <label htmlFor="title" className="modal__label">
+            Title:
+          </label>
+          <input
+            autoFocus
+            id="title"
+            className="modal__input"
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
+            required
+          />
 
           {/* Priority Selection */}
           <fieldset className="modal__fieldset">
             <legend className="modal__legend">Priority:</legend>
-            {PRIORITY_OPTIONS.map(option => (
+            {PRIORITY_OPTIONS.map((option) => (
               <label key={option} className="modal__radio">
-                <input type="radio" name="priority" value={option} checked={priority === option} onChange={handlePriorityChange} />
+                <input
+                  type="radio"
+                  name="priority"
+                  value={option}
+                  checked={priority === option}
+                  onChange={handlePriorityChange}
+                />
                 {option.charAt(0).toUpperCase() + option.slice(1)}
               </label>
             ))}
           </fieldset>
 
           {/* Status Dropdown */}
-          <label htmlFor="status" className="modal__label">Status:</label>
-          <select id="status" className="modal__select" value={status} onChange={handleStatusChange}>
+          <label htmlFor="status" className="modal__label">
+            Status:
+          </label>
+          <select
+            id="status"
+            className="modal__select"
+            value={status}
+            onChange={handleStatusChange}
+          >
             {STATUS_OPTIONS.map(({ value, label }) => (
-              <option key={value} value={value}>{label}</option>
+              <option key={value} value={value}>
+                {label}
+              </option>
             ))}
           </select>
 
@@ -138,8 +185,16 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
           )}
 
           <div className="modal__actions">
-            <button type="submit" className="modal__button modal__button--save">{task ? "Save Changes" : "Save"}</button>
-            <button type="button" className="modal__button modal__button--cancel" onClick={onClose}>Cancel</button>
+            <button type="submit" className="modal__button modal__button--save">
+              {task ? "Save Changes" : "Save"}
+            </button>
+            <button
+              type="button"
+              className="modal__button modal__button--cancel"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>

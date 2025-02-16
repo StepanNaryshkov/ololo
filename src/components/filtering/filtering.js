@@ -1,5 +1,9 @@
 import React from "react";
-import { PRIORITY_OPTIONS, STATUS_OPTIONS, ITEMS_PER_PAGE_OPTIONS } from "../../helpers/constants";
+import {
+  PRIORITY_OPTIONS,
+  STATUS_OPTIONS,
+  ITEMS_PER_PAGE_OPTIONS,
+} from "../../helpers/constants";
 import "./styles.css";
 
 const TaskFilters = ({
@@ -10,32 +14,32 @@ const TaskFilters = ({
   filterStatus,
   handleFilterStatusChange,
   itemsPerPage,
-  handleItemsPerPageChange
+  handleItemsPerPageChange,
 }) => {
   return (
     <div className="task-filters">
-      <input 
-        type="text" 
+      <input
+        type="text"
         className="task-filters__input"
-        placeholder="Search title..." 
+        placeholder="Search title..."
         value={filterTitle}
         onChange={handleFilterTitleChange}
       />
 
-      <select 
+      <select
         className="task-filters__select"
         value={filterPriority}
         onChange={handleFilterPriorityChange}
       >
         <option value="">All Priorities</option>
-        {PRIORITY_OPTIONS.map(priority => (
+        {PRIORITY_OPTIONS.map((priority) => (
           <option key={priority} value={priority}>
             {priority.charAt(0).toUpperCase() + priority.slice(1)}
           </option>
         ))}
       </select>
 
-      <select 
+      <select
         className="task-filters__select"
         value={filterStatus}
         onChange={handleFilterStatusChange}
@@ -48,12 +52,12 @@ const TaskFilters = ({
         ))}
       </select>
 
-      <select 
+      <select
         className="task-filters__select"
         value={itemsPerPage}
         onChange={handleItemsPerPageChange}
       >
-        {ITEMS_PER_PAGE_OPTIONS.map(size => (
+        {ITEMS_PER_PAGE_OPTIONS.map((size) => (
           <option key={size} value={size}>
             {size} per page
           </option>

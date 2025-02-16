@@ -6,7 +6,12 @@ import Header from "../header/header";
 import CustomFieldsModal from "../modal/fields-modal";
 import TaskFilters from "../filtering/filtering";
 import { sortTasks, filterTasks } from "../../helpers/helpers";
-import { SORT_ORDERS, PRIORITY_OPTIONS, STATUSES, ITEMS_PER_PAGE_OPTIONS } from "../../helpers/constants";
+import {
+  SORT_ORDERS,
+  PRIORITY_OPTIONS,
+  STATUSES,
+  ITEMS_PER_PAGE_OPTIONS,
+} from "../../helpers/constants";
 import "./styles.css";
 
 const columns = ["id", "title", "status", "priority"];
@@ -29,7 +34,7 @@ const TaskTable = () => {
 
   const handleBulkEdit = useCallback(() => {
     if (selectedTasks.size === 0) return;
-  
+
     dispatch({
       type: ACTIONS.BULK_EDIT,
       payload: {
@@ -38,16 +43,15 @@ const TaskTable = () => {
           Object.entries({
             status: bulkStatus,
             priority: bulkPriority,
-          }).filter(([_, value]) => value) // Only include selected values
+          }).filter(([_, value]) => value), // Only include selected values
         ),
       },
     });
-  
+
     setSelectedTasks(new Set());
     setBulkStatus("");
     setBulkPriority("");
   }, [selectedTasks, bulkStatus, bulkPriority, dispatch, ACTIONS]);
-  
 
   /** Sorting logic */
   const handleSort = useCallback(
@@ -88,9 +92,7 @@ const TaskTable = () => {
   const filters = { filterTitle, filterPriority, filterStatus };
   const filteredTasks = filterTasks(tasks, filters);
 
-
   const sortedTasks = sortTasks(filteredTasks, sortColumn, sortOrder);
-
 
   const totalPages = Math.ceil(sortedTasks.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -122,7 +124,6 @@ const TaskTable = () => {
     }
   }, [selectedTasks, tasks, itemsPerPage, currentPage, dispatch, ACTIONS]);
 
-
   const toggleTaskSelection = useCallback((taskId) => {
     setSelectedTasks((prevSelected) => {
       const updatedSelection = new Set(prevSelected);
@@ -132,7 +133,6 @@ const TaskTable = () => {
       return updatedSelection;
     });
   }, []);
-
 
   const toggleSelectAll = useCallback(() => {
     setSelectedTasks((prevSelected) => {
@@ -236,8 +236,22 @@ const TaskTable = () => {
                         checked={selectedTasks.size === paginatedData.length}
                       />
                     </th>
-                    {columns.map((col) => <SortableColumnHeader key={col} col={col} handleSort={handleSort} getSortIcon={getSortIcon} />)}
-                    {customFields.map((field) => <CustomFieldHeader key={field.name} field={field} handleSort={handleSort} getSortIcon={getSortIcon} />)}
+                    {columns.map((col) => (
+                      <SortableColumnHeader
+                        key={col}
+                        col={col}
+                        handleSort={handleSort}
+                        getSortIcon={getSortIcon}
+                      />
+                    ))}
+                    {customFields.map((field) => (
+                      <CustomFieldHeader
+                        key={field.name}
+                        field={field}
+                        handleSort={handleSort}
+                        getSortIcon={getSortIcon}
+                      />
+                    ))}
                     <th className="task-table__header">Actions</th>
                   </tr>
                 </thead>
@@ -266,21 +280,27 @@ const TaskTable = () => {
                       >
                         {task.priority}
                       </td>
-                      {customFields.map((field) => <CustomFieldCell key={field.name} field={field} task={task} />)}
+                      {customFields.map((field) => (
+                        <CustomFieldCell
+                          key={field.name}
+                          field={field}
+                          task={task}
+                        />
+                      ))}
                       <td className="task-table__cell">
                         <div className="flex">
-                        <button
-                          className="task-table__delete-button"
-                          onClick={() => handleDeleteTask(task.id)}
-                        >
-                          X
-                        </button>
-                        <button
-                          className="task-table__edit-button flex"
-                          onClick={() => handleEditTask(task)}
-                        >
-                          <span>✏️</span> Edit
-                        </button>
+                          <button
+                            className="task-table__delete-button"
+                            onClick={() => handleDeleteTask(task.id)}
+                          >
+                            X
+                          </button>
+                          <button
+                            className="task-table__edit-button flex"
+                            onClick={() => handleEditTask(task)}
+                          >
+                            <span>✏️</span> Edit
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -319,8 +339,14 @@ const TaskBulkActions = ({
   handleBulkEdit,
   handleBulkDelete,
 }) => {
-  const onBulkStatusChange = useCallback((e) => setBulkStatus(e.target.value), [setBulkStatus]);
-  const onBulkPriorityChange = useCallback((e) => setBulkPriority(e.target.value), [setBulkPriority]);
+  const onBulkStatusChange = useCallback(
+    (e) => setBulkStatus(e.target.value),
+    [setBulkStatus],
+  );
+  const onBulkPriorityChange = useCallback(
+    (e) => setBulkPriority(e.target.value),
+    [setBulkPriority],
+  );
 
   if (selectedTasks.size <= 1) return null; // Hide if less than 2 tasks selected
 
@@ -328,7 +354,11 @@ const TaskBulkActions = ({
     <div className="task-bulk-actions">
       <span>{selectedTasks.size} selected</span>
 
-      <select className="task-bulk-actions__select" value={bulkStatus} onChange={onBulkStatusChange}>
+      <select
+        className="task-bulk-actions__select"
+        value={bulkStatus}
+        onChange={onBulkStatusChange}
+      >
         <option value="">Change Status</option>
         {STATUSES.map((status) => (
           <option key={status} value={status}>
@@ -337,7 +367,11 @@ const TaskBulkActions = ({
         ))}
       </select>
 
-      <select className="task-bulk-actions__select" value={bulkPriority} onChange={onBulkPriorityChange}>
+      <select
+        className="task-bulk-actions__select"
+        value={bulkPriority}
+        onChange={onBulkPriorityChange}
+      >
         <option value="">Change Priority</option>
         {PRIORITY_OPTIONS.map((priority) => (
           <option key={priority} value={priority}>
@@ -349,7 +383,10 @@ const TaskBulkActions = ({
       <button className="task-bulk-actions__button" onClick={handleBulkEdit}>
         Apply
       </button>
-      <button className="task-bulk-actions__button task-bulk-actions__button--delete" onClick={handleBulkDelete}>
+      <button
+        className="task-bulk-actions__button task-bulk-actions__button--delete"
+        onClick={handleBulkDelete}
+      >
         Delete Selected
       </button>
     </div>
@@ -360,14 +397,20 @@ const SortableColumnHeader = ({ col, handleSort, getSortIcon }) => {
   const onSort = useCallback(() => handleSort(col), [handleSort, col]);
 
   return (
-    <th className="task-table__header task-table__header--clickable" onClick={onSort}>
+    <th
+      className="task-table__header task-table__header--clickable"
+      onClick={onSort}
+    >
       {col.charAt(0).toUpperCase() + col.slice(1)} {getSortIcon(col)}
     </th>
   );
 };
 
 const CustomFieldHeader = ({ field, handleSort, getSortIcon }) => {
-  const onSort = useCallback(() => handleSort(field.name), [handleSort, field.name]);
+  const onSort = useCallback(
+    () => handleSort(field.name),
+    [handleSort, field.name],
+  );
 
   return (
     <th className="task-table__header" onClick={onSort}>
@@ -389,7 +432,7 @@ const CustomFieldCell = ({ field, task }) => {
       {field.type === "checkbox" ? (
         <input type="checkbox" disabled checked={!!isChecked} />
       ) : (
-        task.customFields?.[field.name] ?? "N/A"
+        (task.customFields?.[field.name] ?? "N/A")
       )}
     </td>
   );
