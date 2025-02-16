@@ -244,7 +244,7 @@ const TaskTable = () => {
             <table className="task-table__table">
               <thead className="task-table__head">
                 <tr className="task-table__row">
-                  <th>
+                  <th className="task-table__header">
                     <input
                       type="checkbox"
                       onChange={toggleSelectAll}
@@ -290,7 +290,7 @@ const TaskTable = () => {
               <tbody className="task-table__body">
                 {paginatedData.map((task) => (
                   <tr key={task.id} className="task-table__row">
-                    <td>
+                    <td className="task-table__cell">
                       <input
                         type="checkbox"
                         className="task-table__checkbox"
