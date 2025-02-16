@@ -29,10 +29,6 @@
   font-weight: bold;
 }
 
-/* Hover Effect */
-.pagination__button:hover:not(:disabled) {
-  background-color: #f0f0f0;
-}
 
 /* Disabled Button */
 .pagination__button:disabled {

@@ -7,7 +7,7 @@ export default function App() {
   return (
     <AppProvider>
       <ErrorBoundary>
-        <h1>Task Manager from Ololo ':)'</h1>
+        <h1>Task Manager from Ololo ❤️</h1>
         <TaskTable />
       </ErrorBoundary>
     </AppProvider>
