@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import {
     STATUSES,
     PRIORITY_OPTIONS,
-  } from "../../helpers/constants";
+  } from "../../../helpers/constants";
 
 const TaskBulkActions = ({
   selectedTasks,

@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TaskBulkActions from "./task-bulk-actions";
-import { STATUSES, PRIORITY_OPTIONS } from "../../helpers/constants";
+import { STATUSES, PRIORITY_OPTIONS } from "../../../helpers/constants";
 
 describe("TaskBulkActions", () => {
   const setBulkStatus = jest.fn();
