@@ -26,7 +26,9 @@ const TaskFilters = ({
         onChange={handleFilterTitleChange}
       />
 
+      <label htmlFor="priority-filter" className="visually-hidden">Priority:</label>
       <select
+        id="priority-filter"
         className="task-filters__select"
         value={filterPriority}
         onChange={handleFilterPriorityChange}
@@ -39,7 +41,9 @@ const TaskFilters = ({
         ))}
       </select>
 
+      <label htmlFor="status-filter" className="visually-hidden">Status:</label>
       <select
+        id="status-filter"
         className="task-filters__select"
         value={filterStatus}
         onChange={handleFilterStatusChange}
@@ -52,7 +56,9 @@ const TaskFilters = ({
         ))}
       </select>
 
+      <label htmlFor="items-per-page" className="visually-hidden">Items per page:</label>
       <select
+        id="items-per-page"
         className="task-filters__select"
         value={itemsPerPage}
         onChange={handleItemsPerPageChange}

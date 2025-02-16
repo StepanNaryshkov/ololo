@@ -236,9 +236,14 @@ const TaskTable = () => {
                     <th className="task-table__header">
                       <input
                         type="checkbox"
+                        id="select-all-tasks"
                         onChange={toggleSelectAll}
                         checked={selectedTasks.size === paginatedData.length}
+                        aria-label="Select all tasks"
                       />
+                      <label htmlFor="select-all-tasks" className="visually-hidden">
+                        Select all tasks
+                      </label>
                     </th>
                     {columns.map((col) => (
                       <SortableColumnHeader
@@ -268,7 +273,11 @@ const TaskTable = () => {
                           className="task-table__checkbox"
                           onChange={() => toggleTaskSelection(task.id)}
                           checked={selectedTasks.has(task.id)}
+                          aria-label={`Select task ${task.id}`}
                         />
+                          <label htmlFor={`task-checkbox-${task.id}`} className="visually-hidden">
+                            Select task {task.id}
+                          </label>
                       </td>
                       <td className="task-table__cell">{task.id}</td>
                       <td className="task-table__cell">{task.title}</td>
