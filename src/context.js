@@ -18,6 +18,7 @@ export const ACTIONS = {
   UNDO: "UNDO",
   REDO: "REDO",
   BULK_EDIT: "BULK_EDIT",
+  REORDER_TASKS: "REORDER_TASKS", // New action
 };
 
 // Initial state
@@ -112,6 +113,12 @@ export const taskReducer = (state, action) => {
         (field) => field.name !== action.payload,
       );
       return { ...state, customFields: filteredFields };
+
+    case ACTIONS.REORDER_TASKS: {
+      const { updatedTasks } = action.payload;
+      saveTasks(updatedTasks);
+      return { ...state, tasks: updatedTasks };
+    }
 
     case ACTIONS.BULK_EDIT: {
       const { taskIds, updates } = action.payload;

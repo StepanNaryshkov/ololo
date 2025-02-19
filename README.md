@@ -64,7 +64,16 @@ This project is a **Task Management Application** that provides users with an in
 - **CSS (BEM Methodology)** (Styling & Animations)
 
 ## **Project Limitations & Assumptions**
-- The **Kanban board is not implemented** because it would take over 10 hours to complete. Since the goal was to show the maximum result within 6 hours, I decided not to spend two full working days on it. However, if needed, it can be added later.
+## Kanban Board Implementation
+
+- The **Kanban board has been successfully implemented**, and the development took **4 hours** to complete. 
+
+    The initial estimation was over **10 hours**, but by optimizing the approach, the functionality was completed in less than half that time. The implementation includes:
+    - Task filtering and categorization
+    - Drag-and-drop reordering
+    - Task modal for adding and editing tasks
+
+    Further improvements can be made if necessary, but the core functionality is fully operational.
 - **Everything is accessible using only the keyboard**.
 - **CSS follows the BEM methodology** for maintainability.
 - **Mobile view was out of scope**, but the application works fully on mobile devices.
@@ -77,5 +86,6 @@ The project demo is available here: [Live Demo](https://ololo-peach.vercel.app/)
 
 ## **UI**
 ![main view](main-view.png)
+![kanban view](kanban-view.png)
 ![custom fields modal](manage-custom-fields.png)
 
