@@ -26,22 +26,30 @@ const TaskFilters = ({
         onChange={handleFilterTitleChange}
       />
 
-      <label htmlFor="priority-filter" className="visually-hidden">Priority:</label>
-      <select
-        id="priority-filter"
-        className="task-filters__select"
-        value={filterPriority}
-        onChange={handleFilterPriorityChange}
-      >
-        <option value="">All Priorities</option>
-        {PRIORITY_OPTIONS.map((priority) => (
-          <option key={priority} value={priority}>
-            {priority.charAt(0).toUpperCase() + priority.slice(1)}
-          </option>
-        ))}
-      </select>
+      {filterPriority && (
+        <>
+          <label htmlFor="priority-filter" className="visually-hidden">
+            Priority:
+          </label>
+          <select
+            id="priority-filter"
+            className="task-filters__select"
+            value={filterPriority}
+            onChange={handleFilterPriorityChange}
+          >
+            <option value="">All Priorities</option>
+            {PRIORITY_OPTIONS.map((priority) => (
+              <option key={priority} value={priority}>
+                {priority.charAt(0).toUpperCase() + priority.slice(1)}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
 
-      <label htmlFor="status-filter" className="visually-hidden">Status:</label>
+      <label htmlFor="status-filter" className="visually-hidden">
+        Status:
+      </label>
       <select
         id="status-filter"
         className="task-filters__select"
@@ -56,19 +64,26 @@ const TaskFilters = ({
         ))}
       </select>
 
-      <label htmlFor="items-per-page" className="visually-hidden">Items per page:</label>
-      <select
-        id="items-per-page"
-        className="task-filters__select"
-        value={itemsPerPage}
-        onChange={handleItemsPerPageChange}
-      >
-        {ITEMS_PER_PAGE_OPTIONS.map((size) => (
-          <option key={size} value={size}>
-            {size} per page
-          </option>
-        ))}
-      </select>
+      {itemsPerPage && (
+        <>
+          {" "}
+          <label htmlFor="items-per-page" className="visually-hidden">
+            Items per page:
+          </label>
+          <select
+            id="items-per-page"
+            className="task-filters__select"
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+          >
+            {ITEMS_PER_PAGE_OPTIONS.map((size) => (
+              <option key={size} value={size}>
+                {size} per page
+              </option>
+            ))}
+          </select>
+        </>
+      )}
     </div>
   );
 };

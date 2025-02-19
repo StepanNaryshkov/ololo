@@ -21,3 +21,32 @@ h1 {
   white-space: nowrap;
   width: 1px;
 }
+
+.view-toggle {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.toggle-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 8px;
+  margin: 0 10px;
+}
+
+.toggle-button:hover {
+  background-color: #e0e0e0;
+}
+
+.toggle-button.active {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}

@@ -21,7 +21,7 @@
 
 /* Element: Table Head */
 .task-table__head {
-  background-color: #e0e0e0; /* Darker background for better contrast */
+  background-color: #e0e0e0;
   text-align: left;
 }
 
@@ -41,7 +41,7 @@
 /* Element: Table Cell */
 .task-table__cell {
   padding: 12px;
-  border-bottom: 1px solid #aaa; /* Darker border */
+  border-bottom: 1px solid #aaa;
 }
 
 /* Modifier: Status */

@@ -3,10 +3,12 @@ import AppContext from "../../context";
 import { STATUS_OPTIONS, PRIORITY_OPTIONS } from "../../helpers/constants";
 import "./styles.css";
 
-const TaskModal = ({ isOpen, onClose, task = null }) => {
+const TaskModal = ({ isOpen, onClose, task = null, defaultPriority }) => {
   const { dispatch, ACTIONS, customFields } = useContext(AppContext);
+  const predefinedPriority = defaultPriority || "medium";
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState("medium");
+  const [priority, setPriority] = useState(predefinedPriority);
+
   const [status, setStatus] = useState("not_started");
   const [error, setError] = useState("");
   const [customFieldValues, setCustomFieldValues] = useState({});
@@ -15,12 +17,12 @@ const TaskModal = ({ isOpen, onClose, task = null }) => {
   useEffect(() => {
     if (!isOpen) {
       setTitle("");
-      setPriority("medium");
+      setPriority(predefinedPriority);
       setStatus("not_started");
       setCustomFieldValues({});
       setError("");
     }
-  }, [isOpen]);
+  }, [isOpen, predefinedPriority]);
 
   // Populate fields when editing a task
   useEffect(() => {
